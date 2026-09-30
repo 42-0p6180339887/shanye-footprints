@@ -1,0 +1,931 @@
+/* Editorial treatment for the activity archive and its detail dialog.
+   Intentionally scoped away from the home hero, header, map and footer. */
+#activities {
+  --archive-paper: #f7f5ef;
+  --archive-surface: #fbfaf6;
+  --archive-ink: #292c29;
+  --archive-muted: #716f6b;
+  --archive-line: #d9d6ce;
+  --archive-purple: #695371;
+  --archive-purple-soft: #eee9ef;
+}
+
+#activities .collection-heading h2 {
+  color: var(--archive-ink);
+  letter-spacing: .015em;
+}
+
+#activities .collection-heading > p {
+  color: var(--archive-muted);
+  font-size: 13px;
+}
+
+#activities .filters {
+  border-top-color: var(--archive-ink);
+  border-bottom-color: var(--archive-line);
+  gap: 22px;
+  padding-block: 15px;
+}
+
+#activities .filters input,
+#activities .filters select {
+  min-height: 40px;
+  color: var(--archive-ink);
+  font-size: 13px;
+}
+
+#activities .filters input::placeholder {
+  color: #77746f;
+}
+
+#activities .filters select {
+  border-left-color: var(--archive-line);
+}
+
+#activities .search-field svg {
+  top: 11px;
+}
+
+#activities .reset-button {
+  min-height: 40px;
+  padding: 0 7px;
+  color: var(--archive-muted);
+  font-size: 12px;
+  text-underline-offset: 4px;
+}
+
+#activities .reset-button:hover {
+  color: var(--archive-purple);
+  text-decoration: underline;
+}
+
+#activities .list-heading {
+  align-items: baseline;
+  padding-top: 22px;
+  color: var(--archive-muted);
+  font-size: 12px;
+}
+
+#activities .list-heading > span {
+  color: #77746f;
+  font-size: 11px;
+}
+
+#activities .year-group {
+  grid-template-columns: 106px minmax(0, 1fr);
+  gap: 27px;
+  margin-top: 39px;
+}
+
+#activities .timeline-year {
+  padding-top: 14px;
+  color: var(--archive-purple);
+  font: italic 34px/1.2 Georgia, "Times New Roman", serif;
+  font-variant-numeric: oldstyle-nums;
+  letter-spacing: -.035em;
+}
+
+#activities .year-rows {
+  border-top-color: #bdb9b0;
+}
+
+#activities .activity-row {
+  grid-template-columns: 67px minmax(0, 1fr) 94px 22px;
+  gap: 19px;
+  min-height: 94px;
+  padding: 20px 8px;
+  border-bottom-color: var(--archive-line);
+  color: var(--archive-ink);
+  transition: background-color .16s ease, padding .16s ease, border-color .16s ease;
+}
+
+#activities .activity-row:hover {
+  padding-inline: 13px;
+  background: #f0eee8;
+  border-bottom-color: #c7c1b7;
+}
+
+#activities .activity-date {
+  padding-top: 2px;
+}
+
+#activities .activity-date strong {
+  color: var(--archive-ink);
+  font: 30px/1 Georgia, "Times New Roman", serif;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+
+#activities .activity-date small {
+  margin-top: 8px;
+  color: var(--archive-muted);
+  font-size: 11px;
+  letter-spacing: .04em;
+}
+
+#activities .activity-title {
+  color: var(--archive-ink);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.65;
+  text-wrap: pretty;
+}
+
+#activities .activity-meta {
+  margin-top: 5px;
+  color: var(--archive-muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+#activities .activity-type {
+  color: #666760;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+#activities .activity-arrow {
+  color: var(--archive-purple);
+  font-size: 20px;
+  transition: transform .16s ease;
+}
+
+#activities .activity-row:hover .activity-arrow {
+  transform: translate(2px, -2px);
+}
+
+#activities .status-note {
+  display: inline-block;
+  margin-left: 8px;
+  color: #826b42;
+  font-size: 11px;
+}
+
+#activities .activity-row[data-status="待核对"] .status-note {
+  color: #6b5d70;
+}
+
+#activities .load-more {
+  min-height: 46px;
+  gap: 35px;
+  border-color: #c7c3bb;
+  padding: 11px 20px;
+  color: var(--archive-ink);
+  font-size: 13px;
+  transition: background-color .16s ease, border-color .16s ease;
+}
+
+#activities .load-more:hover {
+  border-color: #aaa1ae;
+  background: var(--archive-purple-soft);
+}
+
+#activities .collection-footnote {
+  color: #77746f;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+#activities .collection-footnote a {
+  color: var(--archive-purple);
+}
+
+#activities .message-state {
+  color: var(--archive-muted);
+  font-size: 14px;
+}
+
+/* Detail dialog: quiet paper surface around a route-first layout. */
+#activity-dialog {
+  --detail-paper: #f7f5ef;
+  --detail-surface: #fbfaf6;
+  --detail-ink: #292c29;
+  --detail-muted: #716f6b;
+  --detail-line: #d9d6ce;
+  --detail-purple: #695371;
+  width: min(1240px, calc(100% - 56px));
+  border: 1px solid #d2cec5;
+  background: var(--detail-surface);
+  color: var(--detail-ink);
+  box-shadow: 0 24px 72px #1b191d40;
+  scrollbar-color: #b4afb5 transparent;
+  overflow-anchor: none;
+}
+
+#activity-dialog::backdrop {
+  background: #2423238c;
+  backdrop-filter: blur(3px);
+}
+
+#activity-dialog .detail-toolbar {
+  min-height: 60px;
+  padding: 13px 34px;
+  border-bottom-color: var(--detail-line);
+  background: var(--detail-surface);
+  color: var(--detail-muted);
+  font-size: 12px;
+}
+
+#activity-dialog .detail-toolbar > span:first-child {
+  color: var(--detail-ink);
+  letter-spacing: .025em;
+}
+
+#activity-dialog .detail-toolbar i {
+  color: #a19b9e;
+}
+
+#activity-dialog .detail-toolbar button {
+  min-height: 38px;
+  gap: 12px;
+  padding: 3px 0 3px 12px;
+  color: var(--detail-muted);
+  font-size: 12px;
+}
+
+#activity-dialog .detail-toolbar button:hover {
+  color: var(--detail-purple);
+}
+
+#activity-dialog .detail-toolbar button span {
+  color: var(--detail-ink);
+  font-size: 24px;
+}
+
+#activity-dialog .detail-inner {
+  padding: 39px 46px 46px;
+}
+
+#activity-dialog .detail-header {
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 28px;
+  align-items: start;
+  margin-bottom: 10px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--detail-line);
+}
+
+#activity-dialog .detail-header .eyebrow,
+#activity-dialog .route-section-heading .eyebrow,
+#activity-dialog .document-heading-row .eyebrow {
+  color: var(--detail-purple);
+  font-size: 11px;
+  letter-spacing: .13em;
+}
+
+#activity-dialog .detail-header h2 {
+  max-width: 800px;
+  margin-top: 9px;
+  color: var(--detail-ink);
+  font-size: clamp(30px, 3vw, 39px);
+  line-height: 1.45;
+  letter-spacing: .01em;
+  text-wrap: pretty;
+}
+
+#activity-dialog .detail-meta {
+  margin-top: 13px;
+  color: var(--detail-muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+#activity-dialog .detail-route-action {
+  max-width: 235px;
+  padding-top: 3px;
+  text-align: right;
+}
+
+#activity-dialog .small-upload {
+  min-height: 38px;
+  border-color: #c9c3cb;
+  padding: 7px 12px;
+  color: var(--detail-purple);
+  background: transparent;
+  font-size: 12px;
+  transition: background-color .16s ease, border-color .16s ease;
+}
+
+#activity-dialog .small-upload:hover {
+  border-color: var(--detail-purple);
+  background: #f1edf1;
+  color: #57455e;
+}
+
+#activity-dialog .detail-route-action .route-status {
+  color: var(--detail-muted);
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+#activity-dialog .activity-route {
+  margin-bottom: 34px;
+}
+
+#activity-dialog .route-section-heading {
+  align-items: end;
+  padding: 21px 0 17px;
+  border-top: 0;
+}
+
+#activity-dialog .route-section-heading h3,
+#activity-dialog .document-heading-row h3 {
+  margin-top: 4px;
+  color: var(--detail-ink);
+  font-size: 27px;
+  line-height: 1.4;
+}
+
+#activity-dialog .route-tabs {
+  gap: 0;
+  padding: 3px;
+  border: 1px solid #ddd9d1;
+  background: #f1efe9;
+}
+
+#activity-dialog .route-tabs button {
+  min-height: 34px;
+  padding: 6px 14px;
+  color: var(--detail-muted);
+  font-size: 12px;
+  transition: background-color .14s ease, color .14s ease;
+}
+
+#activity-dialog .route-tabs button[aria-pressed="true"] {
+  color: var(--detail-ink);
+  background: var(--detail-surface);
+  box-shadow: 0 1px 2px #292c2912;
+}
+
+#activity-dialog .route-layout {
+  grid-template-columns: minmax(0, 1fr) 250px;
+  border-color: #c9c5bc;
+  background: #26292a;
+}
+
+#activity-dialog .route-stage {
+  background: #26292a;
+}
+
+#activity-dialog .route-empty {
+  background: #26292a;
+}
+
+#activity-dialog .route-empty::before {
+  background: linear-gradient(#d8d1dd0a 1px, transparent 1px),
+    linear-gradient(90deg, #d8d1dd0a 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: linear-gradient(transparent, #000 24%, #000 75%, transparent);
+}
+
+#activity-dialog .route-empty-symbol {
+  color: #b7a6bf;
+}
+
+#activity-dialog .route-empty h4 {
+  color: #f0ecef;
+  font-size: 23px;
+}
+
+#activity-dialog .route-empty p {
+  color: #c3bdc2;
+  font-size: 13px;
+}
+
+#activity-dialog .empty-upload {
+  min-height: 42px;
+  color: #eee8f0;
+  border-bottom-color: #97899b;
+  font-size: 13px;
+}
+
+#activity-dialog .route-empty-sub {
+  color: #aaa2aa;
+  font-size: 10px;
+}
+
+#activity-dialog .route-sidebar {
+  padding: 25px 22px;
+  border-left: 1px solid #d1cdc4;
+  background: #f3f1eb;
+}
+
+#activity-dialog .route-sidebar-heading .eyebrow {
+  color: var(--detail-purple);
+  font-size: 10px;
+}
+
+#activity-dialog .route-sidebar-heading strong {
+  margin-top: 7px;
+  color: var(--detail-ink);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+#activity-dialog .route-status {
+  color: var(--detail-muted);
+  font-size: 11px;
+}
+
+#activity-dialog .route-stats {
+  grid-template-columns: 1fr;
+  gap: 13px;
+  padding: 18px 0;
+  border-color: #d5d1c8;
+}
+
+#activity-dialog .route-stats dt {
+  color: var(--detail-muted);
+  font-size: 11px;
+}
+
+#activity-dialog .route-stats dd {
+  margin-top: 5px;
+  color: var(--detail-ink);
+  font-size: 22px;
+  font-variant-numeric: tabular-nums;
+}
+
+#activity-dialog .primary-button {
+  min-height: 45px;
+  border-color: var(--detail-purple);
+  color: #fff;
+  background: var(--detail-purple);
+  font-size: 13px;
+  transition: background-color .15s ease, border-color .15s ease;
+}
+
+#activity-dialog .primary-button:hover:not(:disabled) {
+  border-color: #55415f;
+  background: #55415f;
+}
+
+#activity-dialog .playback-controls input {
+  accent-color: var(--detail-purple);
+}
+
+#activity-dialog .playback-controls p,
+#activity-dialog .text-button {
+  color: var(--detail-muted);
+  font-size: 11px;
+}
+
+#activity-dialog .text-button {
+  min-height: 34px;
+}
+
+#activity-dialog .storage-notice {
+  color: #77746f;
+  font-size: 10px;
+}
+
+#activity-dialog .scene-overlay {
+  color: #c0b5c6;
+  font-size: 10px;
+}
+
+#activity-dialog .scene-controls button {
+  min-width: 34px;
+  min-height: 34px;
+  border-color: #bcaec34d;
+  color: #eee8f0;
+  background: #292c29e8;
+  font-size: 16px;
+}
+
+#activity-dialog .scene-controls button:last-child {
+  min-width: 82px;
+  font-size: 11px;
+}
+
+#activity-dialog .scene-help {
+  color: #c2bac4;
+  font-size: 10px;
+}
+
+#activity-dialog .profile-section {
+  padding-top: 20px;
+}
+
+#activity-dialog .profile-section > div {
+  color: var(--detail-muted);
+  font-size: 12px;
+}
+
+#activity-dialog .profile-section h4 {
+  color: var(--detail-ink);
+  font-size: 14px;
+}
+
+#activity-dialog .profile-section svg {
+  height: 130px;
+  border-bottom-color: var(--detail-line);
+}
+
+#activity-dialog .route-versions {
+  border-top-color: #d5d1c8;
+}
+
+#activity-dialog .route-versions summary,
+#activity-dialog .restore-version {
+  min-height: 34px;
+  color: var(--detail-purple);
+  font-size: 12px;
+}
+
+#activity-dialog .version-row {
+  border-bottom-color: #d5d1c8;
+}
+
+#activity-dialog .version-info strong {
+  color: var(--detail-ink);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+#activity-dialog .version-info small {
+  color: var(--detail-muted);
+  font-size: 11px;
+}
+
+#activity-dialog .activity-document {
+  border-top-color: #bdb9b0;
+}
+
+#activity-dialog .document-heading-row {
+  padding: 21px 0 17px;
+}
+
+#activity-dialog .document-external {
+  color: var(--detail-purple);
+  border-bottom-color: #c7bdca;
+  font-size: 12px;
+}
+
+#activity-dialog .document-external:hover {
+  color: #51405a;
+  border-bottom-color: var(--detail-purple);
+}
+
+#activity-dialog .document-viewer {
+  height: clamp(610px, 78vh, 920px);
+  border-color: #cbc7bf;
+  border-radius: 1px;
+  background: #fff;
+  box-shadow: 0 2px 10px #292c2909;
+}
+
+#activity-dialog .document-viewer iframe {
+  background: #fff;
+}
+
+#activity-dialog .document-note {
+  color: var(--detail-muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+#activity-dialog .document-missing {
+  border-color: #c9c5bc;
+  color: var(--detail-muted);
+  font-size: 14px;
+}
+
+#activity-dialog :is(button, a, input, summary, canvas):focus-visible,
+#activities :is(button, a, input, select):focus-visible {
+  outline: 2px solid #80678a;
+  outline-offset: 3px;
+}
+
+@media (min-width: 701px) and (max-width: 1000px) {
+  #activities .year-group {
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 19px;
+  }
+
+  #activities .activity-row {
+    grid-template-columns: 57px minmax(0, 1fr) 78px 18px;
+    gap: 13px;
+  }
+
+  #activity-dialog .detail-inner {
+    padding-inline: 32px;
+  }
+
+  #activity-dialog .route-layout {
+    grid-template-columns: minmax(0, 1fr) 220px;
+  }
+}
+
+@media (max-width: 760px) {
+  #activities .collection-heading h2 {
+    font-size: 31px;
+  }
+
+  #activities .filters {
+    gap: 9px 12px;
+  }
+
+  #activities .filters input,
+  #activities .filters select {
+    font-size: 13px;
+  }
+
+  #activities .filters select {
+    min-height: 38px;
+  }
+
+  #activities .list-heading {
+    padding-top: 18px;
+    font-size: 12px;
+  }
+
+  #activities .list-heading > span {
+    max-width: 52%;
+    text-align: right;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  #activities .year-group {
+    display: block;
+    margin-top: 29px;
+  }
+
+  #activities .timeline-year {
+    position: static;
+    padding: 0 0 11px;
+    font-size: 30px;
+  }
+
+  #activities .year-rows {
+    border-top-color: #bdb9b0;
+  }
+
+  #activities .activity-row {
+    grid-template-columns: 49px minmax(0, 1fr) 16px;
+    gap: 12px;
+    min-height: 88px;
+    padding: 16px 2px;
+  }
+
+  #activities .activity-row:hover {
+    padding-inline: 7px;
+  }
+
+  #activities .activity-date strong {
+    font-size: 27px;
+  }
+
+  #activities .activity-date small {
+    margin-top: 6px;
+    font-size: 11px;
+  }
+
+  #activities .activity-title {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  #activities .activity-meta {
+    margin-top: 4px;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  #activities .activity-type {
+    display: none;
+  }
+
+  #activities .status-note {
+    margin-left: 0;
+  }
+
+  #activities .collection-footnote {
+    margin-top: 30px;
+    font-size: 12px;
+  }
+
+  #activity-dialog {
+    width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    margin: 0;
+    border: 0;
+  }
+
+  #activity-dialog .detail-toolbar {
+    min-height: 54px;
+    padding: 9px 20px;
+  }
+
+  #activity-dialog .detail-inner {
+    padding: 24px 20px 36px;
+  }
+
+  #activity-dialog .detail-header {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 13px;
+    margin-bottom: 22px;
+    padding-bottom: 18px;
+  }
+
+  #activity-dialog .detail-header h2 {
+    font-size: 29px;
+    line-height: 1.5;
+  }
+
+  #activity-dialog .detail-meta {
+    margin-top: 10px;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
+  #activity-dialog .detail-route-action {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    max-width: none;
+    padding: 0;
+    text-align: left;
+  }
+
+  #activity-dialog .detail-route-action .route-status {
+    max-width: 62%;
+    margin: 0;
+    font-size: 11px;
+  }
+
+  #activity-dialog .small-upload {
+    flex: 0 0 auto;
+    min-height: 36px;
+    padding-inline: 10px;
+    font-size: 12px;
+  }
+
+  #activity-dialog .route-section-heading {
+    padding: 17px 0 14px;
+  }
+
+  #activity-dialog .route-section-heading h3,
+  #activity-dialog .document-heading-row h3 {
+    font-size: 24px;
+  }
+
+  #activity-dialog .route-tabs button {
+    min-height: 33px;
+    padding-inline: 10px;
+    font-size: 11px;
+  }
+
+  #activity-dialog .route-layout {
+    display: block;
+  }
+
+  #activity-dialog .route-stage {
+    height: 360px;
+    min-height: 360px;
+  }
+
+  #activity-dialog .route-empty,
+  #activity-dialog .route-stage > #route-three-wrap,
+  #activity-dialog .route-stage canvas,
+  #activity-dialog .route-stage > #route-map {
+    min-height: 360px;
+  }
+
+  #activity-dialog .route-empty {
+    padding: 26px 18px;
+  }
+
+  #activity-dialog .route-empty h4 {
+    font-size: 21px;
+  }
+
+  #activity-dialog .route-empty p {
+    font-size: 13px;
+  }
+
+  #activity-dialog .route-sidebar {
+    padding: 20px;
+    border-top: 1px solid #d1cdc4;
+    border-left: 0;
+  }
+
+  #activity-dialog .route-sidebar-heading {
+    display: none;
+  }
+
+  #activity-dialog .route-stats {
+    grid-template-columns: 1fr 1fr;
+    margin-top: 0;
+    padding-block: 15px;
+  }
+
+  #activity-dialog .playback-controls {
+    padding-top: 14px;
+  }
+
+  #activity-dialog .playback-controls input {
+    margin-top: 16px;
+  }
+
+  #activity-dialog .scene-controls {
+    left: 14px;
+    bottom: 42px;
+  }
+
+  #activity-dialog .scene-controls button {
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  #activity-dialog .scene-controls button:last-child {
+    min-width: 76px;
+    padding-inline: 7px;
+    font-size: 10px;
+  }
+
+  #activity-dialog .scene-overlay {
+    top: 17px;
+    left: 16px;
+    right: 16px;
+    font-size: 9px;
+  }
+
+  #activity-dialog .scene-help {
+    left: 16px;
+    font-size: 10px;
+  }
+
+  #activity-dialog .profile-section svg {
+    height: 102px;
+  }
+
+  #activity-dialog .document-heading-row {
+    gap: 10px;
+    padding: 17px 0 14px;
+  }
+
+  #activity-dialog .document-heading-row h3 {
+    font-size: 23px;
+  }
+
+  #activity-dialog .document-external {
+    font-size: 11px;
+  }
+
+  #activity-dialog .document-viewer {
+    height: 76dvh;
+    min-height: 500px;
+  }
+
+  #activity-dialog .document-note {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 420px) {
+  #activities .activity-row {
+    grid-template-columns: 45px minmax(0, 1fr) 15px;
+    gap: 10px;
+  }
+
+  #activities .activity-title {
+    font-size: 14px;
+  }
+
+  #activity-dialog .detail-inner {
+    padding-inline: 16px;
+  }
+
+  #activity-dialog .route-tabs button {
+    padding-inline: 8px;
+  }
+
+  #activity-dialog .route-stage,
+  #activity-dialog .route-empty,
+  #activity-dialog .route-stage > #route-three-wrap,
+  #activity-dialog .route-stage canvas,
+  #activity-dialog .route-stage > #route-map {
+    min-height: 330px;
+  }
+
+  #activity-dialog .route-stage {
+    height: 330px;
+  }
+
+  #activity-dialog .document-viewer {
+    min-height: 440px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #activities .activity-row,
+  #activities .activity-arrow,
+  #activities .load-more,
+  #activity-dialog .small-upload,
+  #activity-dialog .primary-button,
+  #activity-dialog .route-tabs button {
+    transition: none;
+  }
+}

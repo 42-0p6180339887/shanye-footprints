@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/><meta name="theme-color" content="#f5f3ee"/><meta name="description" content="清华山野的徒步、野营与攀登。翻翻过去的活动，看看一路走过的山。"/><title>山野足迹 · 清华山野</title><link rel="icon" href="assets/shanye-logo.jpg" type="image/jpeg"/><link rel="stylesheet" href="styles.css"/><link rel="stylesheet" href="hero-map.css"/><link rel="stylesheet" href="editorial-content.css"/></head>
+<body><a class="skip-link" href="#activities">跳至活动</a>
+<header class="site-header" id="top"><div class="container header-inner"><a class="brand" href="#top" aria-label="山野足迹首页"><img src="assets/shanye-logo.jpg" width="274" height="174" alt="BRAVEHEART 清华山野" class="brand-mark"/><span class="brand-copy"><strong>山野足迹</strong><span>TSINGHUA · BRAVEHEART</span></span></a><nav aria-label="主要导航"><a href="#activities">所有活动 <span>↘</span></a><a class="personal-link" href="https://tsinghuamc.feishuapp.com/app/app_17ej9a1rbyv/" target="_blank" rel="noopener noreferrer">我的足迹 <span>↗</span></a></nav></div></header>
+<main><section class="hero container" aria-labelledby="page-title">
+  <div class="hero-copy"><p class="eyebrow"><span class="small-star">✳</span> 清华大学学生山野协会</p>
+    <div class="hero-heading"><h1 id="page-title">勇敢之心，<br/>自由之魂</h1><p class="hero-english" lang="en">BRAVE HEART,<br/>FREE SPIRIT.</p></div>
+    <p class="hero-description">周末的山风，帐篷外的星空。<br/>和熟悉的人，再走一段路。</p>
+    <a class="hero-cta" href="#activities">看看我们去过哪里 <span>↓</span></a>
+    <div class="hero-stats"><span><strong id="stat-count">—</strong> 个活动</span><span id="stat-span">—</span></div>
+  </div>
+  <div class="hero-map" aria-label="最近十次活动与清华园的概略位置">
+    <div class="map-topline"><div class="map-heading"><span>OUR FOOTPRINTS <i aria-hidden="true">/</i> 北京及周边</span><strong>从清华园出发</strong></div>
+    <div class="map-mode" role="group" aria-label="首页地图底图"><button type="button" data-basemap="cartoon" aria-pressed="true">手绘</button><button type="button" data-basemap="satellite" aria-pressed="false">卫星</button></div></div>
+    <svg class="journey-map" viewBox="0 0 1200 780" aria-label="以真实卫星影像为底图的活动位置地图" role="group">
+      <image id="journey-basemap" href="assets/journey-satellite-cartoon.jpg" width="1200" height="780" preserveAspectRatio="none"/>
+      <g class="map-grid" aria-hidden="true"><path d="M229 0V780M582 0V780M935 0V780M0 298H1200M0 528H1200"/></g>
+      <g transform="translate(1125 85)" class="map-compass"><circle r="40" fill="#fbf8ee" fill-opacity=".72"/><path d="M0-23 7 2 0-4-7 2Z" fill="#574365"/><path d="M0 19V-19M-12 5h24" stroke="#574365"/><text x="0" y="-48" text-anchor="middle">N</text></g>
+      <g id="journey-pins"></g>
+      <g id="map-campus" class="map-campus"><circle r="8" fill="#6b4382" stroke="#fffaf1" stroke-width="4"/><path d="M0 10v27" stroke="#6b4382" stroke-width="2"/><rect x="-48" y="35" width="96" height="34" rx="6" fill="#fffaf1" opacity=".93"/><text x="0" y="59" text-anchor="middle">清华园</text></g>
+    </svg>
+    <div class="map-credit"><span id="map-period"></span><a href="https://nasa-gibs.github.io/gibs-api-docs/" target="_blank" rel="noopener noreferrer">NASA GIBS / ESDIS</a></div>
+    <div class="map-legend-heading"><span id="map-count">最近 10 次活动</span><span id="map-location-note">位置来自路线文件</span></div><div id="journey-legend" class="journey-legend"></div>
+  </div>
+  <div class="hero-bottom"><span>来到山野是因为山，留在山野是因为人。</span><a id="latest-activity" href="#activities">从最近的一次出发 ↗</a></div>
+</section>
+<section id="activities" class="collection container" aria-labelledby="collection-title"><div class="collection-heading"><div><p class="eyebrow">OUR JOURNEYS</p><h2 id="collection-title">走过的山野</h2></div><p>从一次周末徒步，到更远的山。</p></div><form class="filters" role="search" aria-label="筛选活动"><label class="search-field"><span class="sr-only">搜索活动</span><svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="5.5"/><path d="m12 12 5 5"/></svg><input id="search-input" type="search" placeholder="山名、路线、活动名称" autocomplete="off"/></label><label><span class="sr-only">年份</span><select id="year-filter"><option value="">所有年份</option></select></label><label><span class="sr-only">活动类型</span><select id="type-filter"><option value="">所有活动</option></select></label><button type="button" id="reset-filters" class="reset-button">重置 ↺</button></form><div class="list-heading"><p id="result-count" role="status" aria-live="polite">正在加载…</p><span>活动详情 · 飞书文档 · 路线</span></div><p id="load-error" class="message-state" role="alert" hidden></p><div id="activity-list" class="activity-list" aria-label="活动列表"></div><div id="empty-state" class="message-state" hidden><h3>没有找到这个活动</h3><p>试试其他山名，或者换个年份。</p></div><button id="load-more" type="button" class="load-more" hidden>再看一些 <span>↓</span></button><p class="collection-footnote">这里是部分往期活动。想找自己的出行经历，可以看看<a href="https://tsinghuamc.feishuapp.com/app/app_17ej9a1rbyv/" target="_blank" rel="noopener noreferrer">我的足迹 ↗</a></p></section></main>
+<footer class="container site-footer"><div><strong>山野足迹</strong><p>清华大学学生山野协会</p></div><span>BRAVEHEART</span><a href="#top">回到上面 ↑</a></footer>
+<dialog id="activity-dialog" aria-labelledby="detail-title">
+  <div class="detail-toolbar"><span>山野足迹 <i>/</i> <span id="detail-year"></span></span><button id="close-dialog" type="button" aria-label="关闭活动详情">关闭 <span>×</span></button></div>
+  <div class="detail-inner">
+    <section class="detail-header">
+      <div><p id="detail-kicker" class="eyebrow"></p><h2 id="detail-title"></h2><p id="detail-meta" class="detail-meta"></p></div>
+      <div class="detail-route-action"><button id="upload-track" type="button" class="small-upload"><span aria-hidden="true">＋</span> <span id="upload-label">上传轨迹</span></button><input type="file" id="gpx-input" accept=".gpx" class="sr-only" aria-label="添加这次活动的 GPX 轨迹" aria-describedby="storage-notice"/><span id="storage-notice" class="sr-only">通过飞书上传后所有访客共享。每项活动最多保留五条，首条保留，超额时删除第二条。</span><p id="route-status" class="route-status" aria-live="polite"></p></div>
+    </section>
+    <section id="activity-route" class="activity-route" aria-labelledby="route-heading" hidden>
+      <div class="route-section-heading"><div><p class="eyebrow">THE ROUTE</p><h3 id="route-heading">这一路</h3></div><div id="route-tabs" class="route-tabs" role="group" aria-label="路线显示方式"><button type="button" data-route-view="3d" aria-pressed="true">3D 路线</button><button type="button" data-route-view="map" aria-pressed="false">地图</button></div></div>
+      <div class="route-layout">
+        <div class="route-stage"><div id="route-three-wrap" hidden><canvas id="route-three" tabindex="0" aria-label="三维活动路线，拖动旋转，使用下方按钮调整视角"></canvas><div class="scene-overlay"><span id="scene-label">3D ROUTE</span><span id="elevation-scale">海拔 ×1</span></div><div class="scene-controls"><button type="button" id="rotate-left" aria-label="向左旋转">↶</button><button type="button" id="rotate-right" aria-label="向右旋转">↷</button><button type="button" id="zoom-in" aria-label="放大三维路线">＋</button><button type="button" id="zoom-out" aria-label="缩小三维路线">−</button><button type="button" id="reset-camera">重置视角</button></div><p class="scene-help">拖动旋转 · 双击复位</p></div><div id="route-map" aria-label="本次活动路线地图" hidden></div></div>
+        <aside class="route-sidebar"><div class="route-sidebar-heading"><span class="eyebrow">本次活动</span><strong id="route-activity-name"></strong></div><dl class="route-stats"><div><dt>路程</dt><dd id="route-distance">—</dd></div><div><dt>海拔</dt><dd id="route-elevation">—</dd></div></dl><div class="playback-controls"><button id="play-route" type="button" class="primary-button" aria-pressed="false" disabled>沿路走一遍 <span>▷</span></button><label for="route-progress" class="sr-only">路线回放进度</label><input id="route-progress" type="range" min="0" max="1000" step="1" value="0" disabled/><p id="playback-position">0.0 / 0.0 km</p></div><button id="clear-route" type="button" class="text-button" disabled>恢复上一条</button><div id="route-versions" class="route-versions"></div></aside>
+      </div>
+      <div id="profile-section" class="profile-section" hidden><div><h4>海拔变化</h4><span id="profile-note"></span></div><svg id="route-profile" viewBox="0 0 1000 130" role="img" aria-label="海拔剖面"></svg></div>
+    </section>
+    <section id="activity-document" class="activity-document" aria-labelledby="document-heading">
+      <div class="document-heading-row"><div><p class="eyebrow">TRIP NOTES</p><h3 id="document-heading">活动文档</h3></div><a id="document-link" class="document-external" target="_blank" rel="noopener noreferrer">在飞书打开 ↗</a></div>
+      <div id="document-viewer" class="document-viewer"><iframe id="document-frame" title="本次活动的飞书文档" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="clipboard-write; fullscreen" allowfullscreen></iframe></div>
+      <p id="document-note" class="document-note"></p>
+      <div id="document-missing" class="document-missing" hidden><p>这次活动还没有对应的飞书文档。</p></div>
+    </section>
+  </div>
+</dialog>
+<script type="module" src="app.js"></script></body></html>

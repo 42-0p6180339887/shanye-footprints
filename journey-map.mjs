@@ -5,11 +5,6 @@ function shortName(activity){return (activity.location||activity.name).split(/\s
 export async function renderJourneyMap(activities,openActivity){
   const pins=document.getElementById('journey-pins'),legend=document.getElementById('journey-legend');if(!pins||!legend)return;
   const campus=projectMapPoint(CAMPUS.lat,CAMPUS.lon);document.getElementById('map-campus').setAttribute('transform',`translate(${campus.x} ${campus.y})`);
-  document.querySelectorAll('[data-basemap]').forEach(button=>button.addEventListener('click',()=>{
-    const satellite=button.dataset.basemap==='satellite';document.getElementById('journey-basemap').setAttribute('href',`assets/journey-satellite-${satellite?'original':'cartoon'}.jpg`);
-    document.querySelector('.hero-map').classList.toggle('satellite-mode',satellite);
-    document.querySelectorAll('[data-basemap]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
-  }));
   let locations={};try{const response=await fetch(new URL('./data/activity-locations.json',import.meta.url));if(response.ok)locations=await response.json();}catch{}
   pins.replaceChildren();legend.replaceChildren();
   const positions=activities.flatMap((activity,index)=>{const location=locations[activity.id],point=location&&projectMapPoint(location.lat,location.lon);return point?[{...point,activity,index,location}]:[];});

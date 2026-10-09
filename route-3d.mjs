@@ -138,7 +138,7 @@ export function positionAtProgress(model, progress) {
   };
 }
 
-const DEFAULT_CAMERA = {yaw: -.72, pitch: .5, zoom: 1.08};
+const DEFAULT_CAMERA = {yaw: 0, pitch: .5, zoom: 1.08};
 const COLORS = {background: '#24272b', grid: '#56575c', line: '#f2e9de', unknown: '#b2a1bd', glow: '#c0a9ce', muted: '#b6b0ba', start: '#bad8cd', end: '#e8bf87'};
 const niceStep = value => {
   const power = 10 ** Math.floor(Math.log10(Math.max(value, .0001)));
@@ -267,8 +267,9 @@ export class Route3D {
     const transform = this.frameTransform || {cosYaw: Math.cos(camera.yaw), sinYaw: Math.sin(camera.yaw), cosPitch: Math.cos(camera.pitch), sinPitch: Math.sin(camera.pitch)};
     const rotatedX = x * transform.cosYaw - z * transform.sinYaw;
     const rotatedZ = x * transform.sinYaw + z * transform.cosYaw;
-    const vertical = y * transform.cosPitch - rotatedZ * transform.sinPitch;
-    const depth = y * transform.sinPitch + rotatedZ * transform.cosPitch;
+    // Positive z is north: from the south, north goes up-screen and away from the camera.
+    const vertical = y * transform.cosPitch + rotatedZ * transform.sinPitch;
+    const depth = y * transform.sinPitch - rotatedZ * transform.cosPitch;
     const perspective = 4.4 / Math.max(.5, 4.4 - depth);
     const scale = Math.min(width * .43, Math.max(60, height - 105) * .52) * camera.zoom;
     return {x: width / 2 + rotatedX * scale * perspective, y: height * .53 - vertical * scale * perspective, depth};

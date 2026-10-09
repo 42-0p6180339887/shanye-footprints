@@ -170,7 +170,7 @@ export class Route3D {
     canvas.style.touchAction = 'none'; canvas.style.cursor = 'grab';
     if (!canvas.hasAttribute('tabindex')) canvas.tabIndex = 0;
     canvas.setAttribute('role', 'img');
-    canvas.setAttribute('aria-label', '三维轨迹预览，尚未导入轨迹。导入后可拖动或用方向键旋转。');
+    canvas.setAttribute('aria-label', '三维路线，暂无轨迹。');
     const on = (event, fn, options) => { canvas.addEventListener(event, fn, options); this.listeners.push([event, fn, options]); };
     on('pointerdown', event => {
       if (!event.isPrimary || event.button > 0) return;
@@ -229,8 +229,8 @@ export class Route3D {
     this.model = model; this.progress = 0;
     this.camera = {...DEFAULT_CAMERA};
     this.canvas.setAttribute('aria-label', model
-      ? `三维轨迹：${model.sourceSegmentCount} 个独立分段，${track.originalPointCount || model.originalPointCount} 个原始点，预览 ${model.sampledPointCount} 点。${model.hasElevation ? `海拔 ${Math.round(track.minElevation ?? model.minElevation)} 至 ${Math.round(track.maxElevation ?? model.maxElevation)} 米。` : '无海拔数据，仅显示平面位置。'}${model.missingElevationCount ? '缺失海拔的部分以虚线平面参考表示。' : ''}坐标等比例，无地形模型。可拖动或用方向键旋转，加减键缩放，Home 键重置视角。`
-      : '三维轨迹预览，尚未导入轨迹。导入后可拖动或用方向键旋转。');
+      ? `三维路线。${model.hasElevation ? `海拔 ${Math.round(track.minElevation ?? model.minElevation)} 至 ${Math.round(track.maxElevation ?? model.maxElevation)} 米。` : '无海拔数据，仅显示平面位置。'}${model.missingElevationCount ? '虚线部分没有海拔记录。' : ''}可拖动或用方向键旋转，加减键缩放，Home 键复位。`
+      : '三维路线，暂无轨迹。');
     this.requestDraw();
     return model;
   }
@@ -307,9 +307,9 @@ export class Route3D {
     ctx.font = '11px system-ui, sans-serif'; ctx.fillStyle = COLORS.muted;
     if (!model) {
       ctx.textAlign = 'center'; ctx.font = '18px system-ui, sans-serif'; ctx.fillStyle = COLORS.line;
-      ctx.fillText('一段真实的路，等待展开', width / 2, height / 2 - 4);
+      ctx.fillText('暂无轨迹', width / 2, height / 2 - 4);
       ctx.font = '11px system-ui, sans-serif'; ctx.fillStyle = COLORS.muted;
-      ctx.fillText('导入 GPX 后可旋转查看路径 · 不生成地形', width / 2, height / 2 + 25);
+      ctx.fillText('上传轨迹后可查看路线', width / 2, height / 2 + 25);
       ctx.textAlign = 'left'; return;
     }
     const span = model.radius * 1.25;

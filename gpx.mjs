@@ -1,12 +1,12 @@
 import {prepareTrack} from './lib.mjs';
 export function parseGPX(xmlText) {
-  if (/<!DOCTYPE|<!ENTITY/i.test(xmlText)) throw new Error('这份 GPX 含有不支持的 XML 声明');
+  if (/<!DOCTYPE|<!ENTITY/i.test(xmlText)) throw new Error('暂时无法读取这份 GPX，请重新导出后再试');
   const xml = new DOMParser().parseFromString(xmlText, 'application/xml');
   if (xml.querySelector('parsererror') || xml.documentElement.localName !== 'gpx') throw new Error('这不是有效的 GPX 文件');
   const elements = (root, tag) => [...root.getElementsByTagNameNS('*', tag)];
   const trkSegments = elements(xml, 'trkseg');
   const containers = trkSegments.length ? trkSegments : elements(xml, 'rte');
-  if (!containers.length) throw new Error('文件里没有路线，只有标记点');
+  if (!containers.length) throw new Error('文件中没有轨迹或路线');
   let invalid = 0;
   const segments = [];
   for (const container of containers) {

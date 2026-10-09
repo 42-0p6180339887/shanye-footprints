@@ -108,7 +108,7 @@ export function createTrackClient({apiBase = TRACK_API_BASE, previewBase = new U
     }
     const result = await jsonRequest(`${apiBase.replace(/\/$/, '')}/activities/${encodeURIComponent(activityId)}/tracks${suffix}`, body);
     if (versionId) {
-      if (!validTrack(result, activityId, versionId)) throw new Error('路线版本与请求不一致，请刷新后重试');
+      if (!validTrack(result, activityId, versionId)) throw new Error('路线加载异常，请刷新后重试');
       saveTrack(result);
     }
     else if (!suffix || body !== undefined) saveState(result);

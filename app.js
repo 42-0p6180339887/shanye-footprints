@@ -77,17 +77,17 @@ async function openActivity(activity, updateHash = true) {
     $('document-link').href = doc.url; $('document-link').title = doc.title;
     $('document-frame').title = `${displayName(activity)} · 飞书${doc.kind}`;
   } else { $('document-link').removeAttribute('href'); $('document-frame').removeAttribute('src'); }
-  $('document-note').textContent = doc ? '阅读与编辑沿用飞书权限。若窗口提示登录或无法显示，可在飞书打开。' : '';
+  $('document-note').textContent = doc ? '无法显示时，可在飞书打开。' : '';
   clearScene();
   if (!$('activity-dialog').open) $('activity-dialog').showModal();
   $('activity-dialog').scrollTop = 0;
   if (updateHash) history.replaceState(null,'',`#activity=${encodeURIComponent(activity.id)}`);
-  $('route-status').textContent = '正在打开这次活动的路线…'; setBusy(true);
+  $('route-status').textContent = '正在加载路线…'; setBusy(true);
   let cloudPhase = 'pending';
   const previewRequest=getTrackPreview(activity.id).then(preview=>{
     if(!preview || token!==generation || cloudPhase==='resolved' || acceptedRevision>=0) return;
     routeState=preview.state; showSavedTrack(preview.track); renderVersions(); setBusy(false);
-    $('route-status').textContent += cloudPhase==='failed' ? ' · 暂时无法核对更新' : ' · 核对最新路线中';
+    if(cloudPhase==='failed') $('route-status').textContent += ' · 更新暂不可用';
   }).catch(()=>{});
   // Observe only after the local preview has established the layout. An off-screen
   // editor can take focus and scroll past the route if it is loaded prematurely.
@@ -95,7 +95,7 @@ async function openActivity(activity, updateHash = true) {
     if(currentTrack || cloudPhase!=='resolved' || !routeState?.currentId)startDocument();
   });
   try { const state = await trackRequest(activity.id); cloudPhase='resolved'; if (token === generation) await acceptState(state,token); }
-  catch (error) { cloudPhase='failed'; if (token === generation) $('route-status').textContent = currentTrack ? '已显示保存的路线 · 暂时无法核对更新' : `${error.message}。`; }
+  catch (error) { cloudPhase='failed'; if (token === generation) $('route-status').textContent = currentTrack ? '当前为已保存路线，更新暂不可用。' : '路线暂时无法加载，请稍后重试。'; }
   finally { if (token === generation){setBusy(false);previewRequest.finally(startDocument);} }
 }
 
@@ -143,11 +143,11 @@ function renderVersions() {
   const host = $('route-versions'); if (!host) return; host.replaceChildren();
   if (!routeState?.versions.length) return;
   const disclosure = document.createElement('details');
-  disclosure.append(text('summary',`保留的路线（${routeState.versions.length} / 5）`));
-  routeState.versions.forEach((version,index)=>{
+  disclosure.append(text('summary',`路线版本（${routeState.versions.length}）`));
+  routeState.versions.forEach(version=>{
     const row = text('div','','version-row');
     const info = text('span','','version-info');
-    info.append(text('strong',version.name),text('small',`${new Date(version.createdAt).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}${index === 0 ? ' · 首条保留' : ''}`));
+    info.append(text('strong',version.name),text('small',`${new Date(version.createdAt).toLocaleString('zh-CN',{month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}`));
     const button = text('button',version.id === routeState.currentId ? '展示中' : ROUTE_MANAGER_URL ? '切换 ↗' : '恢复','restore-version');
     button.type = 'button'; button.dataset.version = version.id; button.disabled = busy || version.id === routeState.currentId;
     button.addEventListener('click',()=>changeVersion('/restore',{versionId:version.id,expectedRevision:routeState.revision}));
@@ -163,10 +163,9 @@ function showTrack(track) {
   $('route-three').dataset.previewPoints=String(track.points.length);
   $('route-distance').textContent = `${(track.distance/1000).toFixed(2)} km`;
   $('route-elevation').textContent = track.minElevation === null ? '无海拔' : `${Math.round(track.minElevation)}–${Math.round(track.maxElevation)} m`;
-  $('elevation-scale').textContent = track.minElevation === null ? '文件无海拔' : '海拔 ×1';
-  document.querySelector('.scene-help').textContent = track.points.some(point=>point.ele === null) ? '拖动旋转 · 虚线部分无海拔 · 不含地形' : '拖动旋转 · 按钮缩放 · 不含地形';
+  document.querySelector('.scene-help').textContent = track.points.some(point=>point.ele === null) ? '拖动旋转 · 虚线：无海拔记录' : '拖动旋转';
   $('profile-section').hidden = track.minElevation === null;
-  $('profile-note').textContent = '海拔来自轨迹文件'; drawProfile($('route-profile'),track);
+  drawProfile($('route-profile'),track);
   $('route-progress').value = 0; updatePosition();
   if (trackLayer) map?.removeLayer(trackLayer); if (movingMarker) map?.removeLayer(movingMarker); trackLayer = movingMarker = null;
 }
@@ -228,7 +227,7 @@ async function uploadTrack(file) {
     const parsed=parseGPX(await file.text());
     if (token!==generation) return;
     const segments=parsed.segments.map(segment=>segment.map(({lat,lon,ele})=>({lat,lon,ele})));
-    $('route-status').textContent='正在上传这次活动的路线…';
+    $('route-status').textContent='正在上传轨迹…';
     const state=await trackRequest(activityId,'',{name:file.name,kind:parsed.kind,segments,requestId:crypto.randomUUID()});
     if(token===generation) await acceptState(state,token);
   } catch(error) {
@@ -293,4 +292,4 @@ try {
   const latest=selectActivities(activities).find(row=>dateInfo(row.date).complete);
   if(latest){$('latest-activity').textContent=`最近一次 · ${displayName(latest)} ↗`;$('latest-activity').href=`#activity=${latest.id}`;$('latest-activity').addEventListener('click',event=>{event.preventDefault();openActivity(latest);});}
   const id=new URLSearchParams(location.hash.slice(1)).get('activity'), selected=activities.find(row=>row.id===id);if(selected)openActivity(selected,false);
-}catch(error){$('load-error').hidden=false;$('load-error').textContent=`${error.message}。请刷新后再试。`;$('result-count').textContent='暂时无法打开活动';}
+}catch(error){$('load-error').hidden=false;$('load-error').textContent='活动暂时无法加载，请刷新后再试。';$('result-count').textContent='暂时无法打开活动';}

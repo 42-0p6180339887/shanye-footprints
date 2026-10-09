@@ -8,6 +8,7 @@ body{background:var(--paper)}
 nav{gap:34px;font-size:12px}nav a{transition:color .2s}nav a:hover{color:var(--purple)}nav a span{margin-left:15px}.personal-link{padding:8px 15px;border:1px solid #d5d7cb;border-radius:3px}
 .hero{width:min(1392px,calc(100% - 112px));grid-template-columns:minmax(260px,.77fr) minmax(0,1.5fr);column-gap:52px;padding-top:48px;align-items:center}
 .hero-copy{padding:12px 0 30px;min-width:0}.hero .eyebrow{font-size:10px;color:#646e61;letter-spacing:.12em}.small-star{color:#738166;font-size:21px;margin-right:7px}
+@media(min-width:901px){.hero-copy{align-self:start;padding-top:0}}
 .hero-heading{--title-ink:#514758;position:relative;margin-top:34px;padding-bottom:9px;isolation:isolate}
 .hero h1{font:400 clamp(43px,5.1vw,75px)/1.12 var(--serif);color:var(--title-ink);letter-spacing:.01em;margin:0;white-space:nowrap;position:relative;z-index:1}
 

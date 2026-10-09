@@ -1,22 +1,24 @@
 {
   "source": "NASA GIBS Blue Marble Shaded Relief Bathymetry",
-  "url": "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=BlueMarble_ShadedRelief_Bathymetry&STYLES=&FORMAT=image%2Fjpeg&CRS=EPSG%3A4326&BBOX=38.95%2C114.35%2C40.65%2C117.75&WIDTH=1200&HEIGHT=780",
+  "url": "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetMap&LAYERS=BlueMarble_ShadedRelief_Bathymetry&STYLES=&FORMAT=image%2Fjpeg&CRS=EPSG%3A4326&BBOX=39.32908%2C114.28494%2C41.62782%2C118.60489&WIDTH=1400&HEIGHT=1000",
   "bounds": {
-    "west": 114.35,
-    "south": 38.95,
-    "east": 117.75,
-    "north": 40.65
+    "west": 114.28494,
+    "south": 39.32908,
+    "east": 118.60489,
+    "north": 41.62782
   },
   "projection": "EPSG:4326",
-  "width": 1200,
-  "height": 780,
-  "bytes": 115036,
-  "acknowledgment": "Imagery from NASA GIBS / ESDIS; stylized derivative.",
+  "width": 1400,
+  "height": 1000,
+  "bytes": 171776,
+  "sha256": "12c746e6c783024163666de97628adb512e81d389287bb12b3fdabbf7c613d66",
+  "asset": "assets/journey-geographic-12c746e6c783.jpg",
+  "acknowledgment": "Imagery from NASA GIBS / ESDIS.",
   "campus": {
     "lat": 40,
     "lon": 116.326667,
     "source": "https://www.wikidata.org/wiki/Q16955"
   },
-  "cartoonization": "ImageGen stylization of the exact satellite frame; no geographical labels generated in bitmap.",
-  "marker_source": "Current route geometry; latitude/longitude projected linearly into the same EPSG:4326 bounds. Any label displacement retains an exact anchor dot and connecting leader."
+  "marker_source": "Real route vertex nearest half the cumulative route distance; segment gaps excluded. No destination geocoding.",
+  "display": "Original geographic imagery with CSS color treatment. Map bounds fit the latest ten activities with known route positions and campus."
 }

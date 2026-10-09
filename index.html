@@ -10,15 +10,16 @@
     <div class="hero-stats"><span><strong id="stat-count">—</strong> 个活动</span><span id="stat-span">—</span></div>
   </div>
   <div class="hero-map" aria-label="最近十次活动与清华园的概略位置">
-    <div class="map-topline"><div class="map-heading"><span>OUR FOOTPRINTS <i aria-hidden="true">/</i> 北京及周边</span><strong>从清华园出发</strong></div></div>
-    <svg class="journey-map" viewBox="0 0 1200 780" aria-label="近期活动位置图" role="group">
-      <image id="journey-basemap" href="assets/journey-satellite-cartoon.jpg" width="1200" height="780" preserveAspectRatio="none"/>
-      <g class="map-grid" aria-hidden="true"><path d="M229 0V780M582 0V780M935 0V780M0 298H1200M0 528H1200"/></g>
-      <g transform="translate(1125 85)" class="map-compass"><circle r="40" fill="#fbf8ee" fill-opacity=".72"/><path d="M0-23 7 2 0-4-7 2Z" fill="#574365"/><path d="M0 19V-19M-12 5h24" stroke="#574365"/><text x="0" y="-48" text-anchor="middle">N</text></g>
+    <div class="map-topline"><div class="map-heading"><span>OUR FOOTPRINTS <i aria-hidden="true">/</i> 最近的山野</span><strong>从清华园出发</strong></div></div>
+    <svg id="journey-map" class="journey-map" viewBox="0 0 600 390" aria-label="近期活动位置图" role="group">
+      <image id="journey-basemap" preserveAspectRatio="none"/>
+      <g id="map-compass" transform="translate(575 29)" class="map-compass" aria-hidden="true"><circle r="20"/><path d="M0-8 4 6 0 3-4 6Z"/><text x="0" y="-11" text-anchor="middle">N</text></g>
       <g id="journey-pins"></g>
-      <g id="map-campus" class="map-campus"><circle r="8" fill="#6b4382" stroke="#fffaf1" stroke-width="4"/><path d="M0 10v27" stroke="#6b4382" stroke-width="2"/><rect x="-48" y="35" width="96" height="34" rx="6" fill="#fffaf1" opacity=".93"/><text x="0" y="59" text-anchor="middle">清华园</text></g>
+      <g id="map-campus" class="map-campus"><circle r="5"/><rect id="map-campus-label" x="9" y="-11" width="49" height="22" rx="4"/><text id="map-campus-text" x="33.5" y="4" text-anchor="middle">清华园</text></g>
+      <g id="map-selected-point" aria-hidden="true"></g>
     </svg>
-    <div class="map-credit"><span id="map-period"></span><a href="https://nasa-gibs.github.io/gibs-api-docs/" target="_blank" rel="noopener noreferrer">NASA GIBS / ESDIS</a></div>
+    <div class="map-credit"><span id="map-period"></span><a href="https://nasa-gibs.github.io/gibs-api-docs/" target="_blank" rel="noopener noreferrer">NASA GIBS / ESDIS</a></div><p id="map-basemap-note" class="map-basemap-note" role="status" hidden></p>
+    <div id="map-selection" class="map-selection" aria-live="polite"></div><div id="map-neighbors" class="map-neighbors" hidden></div>
     <div class="map-legend-heading"><span id="map-count">最近 10 次活动</span><span id="map-location-note" hidden></span></div><div id="journey-legend" class="journey-legend"></div>
   </div>
   <div class="hero-bottom"><span>来到山野是因为山，留在山野是因为人。</span><a id="latest-activity" href="#activities">从最近的一次出发 ↗</a></div>

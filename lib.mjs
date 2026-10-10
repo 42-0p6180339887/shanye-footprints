@@ -1,6 +1,19 @@
 export const ACTIVITY_KEYS = ['id', 'name', 'date', 'type', 'location', 'status'];
 export const STATUSES = new Set(['存在成行证据', '仅有计划证据', '待核对']);
 
+const TITLE_DATE = '(?:20\\d{2}[.\\/-]\\d{1,2}[.\\/-]\\d{1,2}|20\\d{6})';
+const TITLE_DATE_END = `(?:${TITLE_DATE}|\\d{1,2}[.\\/-]\\d{1,2}|\\d{1,4})(?![\\d./]|日|天|夜|批|[dD]\\d)`;
+const TITLE_DATE_PREFIX = new RegExp(`^${TITLE_DATE}(?![\\d.])(?:\\s*[-—–~～/至到]\\s*${TITLE_DATE_END})?[\\s_—–-]*`, 'u');
+
+export function displayActivityName(activity) {
+  // Remove a complete leading date/range in one pass; never strip numeric
+  // fragments repeatedly, because a title may contain 2日1夜 or 攀冰2批.
+  return activity.name.replace(/^【(?:总文件|总文档|活动\s*Event|野营|准备会|拉练)】\s*/u, '')
+    .replace(/^(?:技术|十险)[｜|]\s*/u, '')
+    .replace(TITLE_DATE_PREFIX, '')
+    .replace(/\s*(?:总文件|总文档|准备会文档)$/u, '').trim() || activity.name;
+}
+
 export function validateDocuments(documents, activities) {
   if (!documents || typeof documents !== 'object' || Array.isArray(documents)) throw new Error('活动文档列表格式不正确');
   const ids = new Set(activities.map(row => row.id));

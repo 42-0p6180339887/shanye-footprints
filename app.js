@@ -1,4 +1,4 @@
-import {validateActivities, validateDocuments, dateInfo, seasonForDate, ACTIVITY_SEASONS, selectActivities, pointAtProgress} from './lib.mjs';
+import {validateActivities, validateDocuments, displayActivityName as displayName, dateInfo, seasonForDate, ACTIVITY_SEASONS, selectActivities, pointAtProgress} from './lib.mjs';
 import {parseGPX, drawProfile} from './gpx.mjs';
 import {Route3D} from './route-3d.mjs';
 import {getTrackPreview, trackRequest, prepareSavedTrack} from './track-client.mjs';
@@ -13,12 +13,6 @@ let map, trackLayer, movingMarker, generation = 0, busy = false, displayedTrackI
 let animation = null, lastFrame = null, playbackPosition = 0;
 let documentObserver = null;
 
-function displayName(activity) {
-  return activity.name.replace(/^【(?:总文件|总文档|活动\s*Event|野营|准备会|拉练)】\s*/u, '')
-    .replace(/^(?:技术|十险)[｜|]\s*/u, '')
-    .replace(/^(?:20\d{2}[.\/-]\d{1,2}[.\/-]\d{1,2}|20\d{6})(?:[-—]\d{2,4})?[\s\-]*/u, '')
-    .replace(/\s*(?:总文件|总文档|准备会文档)$/u, '').trim() || activity.name;
-}
 function statusLabel(row) { return row.status === '仅有计划证据' ? '仅有活动计划' : row.status === '待核对' ? '是否成行不详' : ''; }
 function formatDate(activity) { const d = dateInfo(activity.date); return d.complete && !d.range ? `${d.year}.${d.month}.${d.day}` : activity.date || '日期未注明'; }
 function readFilterUrl() {

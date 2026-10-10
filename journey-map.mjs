@@ -1,4 +1,5 @@
 import {MAP_BOUNDS, createJourneyLayout, validMapBounds, containsMapBounds, mapImagePlacement, nasaMapUrl, journeyMapHeight} from './map-projection.mjs';
+import {assetUrl} from './asset-urls.mjs';
 
 const NS = 'http://www.w3.org/2000/svg';
 const STAR = 'M0-9 2.7-3 8.8-2.8 4.3 1.4 5.5 8 0 4.5-5.5 8-4.3 1.4-8.8-2.8-2.7-3Z';
@@ -43,7 +44,8 @@ export async function renderJourneyMap(activities, openActivity) {
   function placeImage(imageSource) {
     const placement = mapImagePlacement(imageSource.bounds, layout.bounds, layout.width, layout.height);
     for (const [key, value] of Object.entries(placement)) basemap.setAttribute(key, String(value));
-    if (basemap.getAttribute('href') !== imageSource.asset) basemap.setAttribute('href', imageSource.asset);
+    const href = assetUrl(imageSource.asset);
+    if (basemap.getAttribute('href') !== href) basemap.setAttribute('href', href);
     basemap.removeAttribute('visibility');
   }
 

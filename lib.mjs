@@ -30,27 +30,72 @@ export function validateActivities(rows) {
   return rows;
 }
 
-// Only an explicit four-digit year is used. Partial dates never inherit a guessed year.
-export function dateInfo(value) {
-  const raw = (value || '').trim();
-  const full = raw.match(/^(20\d{2}|19\d{2})(?:[./年-](\d{1,2})[./月-](\d{1,2})日?|(\d{2})(\d{2}))$/);
-  if (full) {
-    const year = Number(full[1]), month = Number(full[2] || full[4]), day = Number(full[3] || full[5]);
-    const time = Date.UTC(year, month - 1, day);
-    const check = new Date(time);
-    if (check.getUTCFullYear() === year && check.getUTCMonth() === month - 1 && check.getUTCDate() === day) {
-      return {year: String(year), month: String(month).padStart(2, '0'), day: String(day).padStart(2, '0'), sort: time, complete: true, raw};
-    }
-  }
-  const year = raw.match(/^(20\d{2}|19\d{2})(?!\d)/)?.[1] || '';
-  return {year, month: '', day: '', sort: year ? Date.UTC(Number(year), 0, 1) - 1 : -Infinity, complete: false, raw};
+export const ACTIVITY_SEASONS = {
+  spring: '春季（3—5月）', summer: '夏季（6—8月）',
+  autumn: '秋季（9—11月）', winter: '冬季（12—2月）',
+};
+
+function calendarDay(year, month, day) {
+  // A leap year validates month/day-only records without assigning them a year.
+  const checkYear = year || 2000, time = Date.UTC(checkYear, month - 1, day), check = new Date(time);
+  return check.getUTCFullYear() === checkYear && check.getUTCMonth() === month - 1 && check.getUTCDate() === day
+    ? {year, month, day, time} : null;
 }
 
-export function selectActivities(rows, {query = '', year = '', type = ''} = {}) {
+function datePrefix(raw) {
+  const full = raw.match(/^(20\d{2}|19\d{2})(?:[./年\s-](\d{1,2})[./月\s-](\d{1,2})日?|(\d{2})(\d{2}))(.*)$/);
+  const partial = full ? null : raw.match(/^(?:(\d{1,2})[./月-](\d{1,2})日?|(\d{2})(\d{2}))(.*)$/);
+  if (!full && !partial) return null;
+  const date = full ? calendarDay(Number(full[1]), Number(full[2] || full[4]), Number(full[3] || full[5]))
+    : calendarDay(0, Number(partial[1] || partial[3]), Number(partial[2] || partial[4]));
+  return date && {...date, remainder: (full ? full[6] : partial[5]).trim()};
+}
+
+function activityStart(raw) {
+  const start = datePrefix(raw);
+  if (!start) return null;
+  if (!start.remainder) return {...start, range: false};
+  const tail = start.remainder.match(/^[-—–~～至到/]\s*(.+)$/)?.[1];
+  if (!tail) return null;
+  let end = datePrefix(tail);
+  if (!end) {
+    const day = tail.match(/^(\d{1,2})日?$/)?.[1];
+    end = day && calendarDay(start.year, start.month, Number(day));
+  }
+  if (!end || end.remainder) return null;
+  if (start.year) {
+    // A shortened range end carries the start year, rolling over only at New Year.
+    const endYear = end.year || start.year + Number(end.month < start.month);
+    const endDate = calendarDay(endYear, end.month, end.day);
+    if (!endDate || endDate.time < start.time) return null;
+  } else if (!end.year && end.month === start.month && end.day < start.day) return null;
+  return {...start, range: true};
+}
+
+// Only an explicit four-digit start year is used; titles and school terms are not dates.
+export function dateInfo(value) {
+  const raw = (value || '').trim(), start = activityStart(raw);
+  if (start) return {
+    year: start.year ? String(start.year) : '', month: String(start.month).padStart(2, '0'),
+    day: String(start.day).padStart(2, '0'), sort: start.year ? start.time : -Infinity,
+    complete: Boolean(start.year), range: start.range, raw,
+  };
+  const year = raw.match(/^(20\d{2}|19\d{2})(?!\d)/)?.[1] || '';
+  return {year, month: '', day: '', sort: year ? Date.UTC(Number(year), 0, 1) - 1 : -Infinity, complete: false, range: false, raw};
+}
+
+export function seasonForDate(value) {
+  const month = Number(dateInfo(value).month);
+  return !month ? '' : month >= 3 && month <= 5 ? 'spring' : month >= 6 && month <= 8 ? 'summer'
+    : month >= 9 && month <= 11 ? 'autumn' : 'winter';
+}
+
+export function selectActivities(rows, {query = '', year = '', type = '', season = ''} = {}) {
   const tokens = query.toLocaleLowerCase().trim().split(/\s+/).filter(Boolean);
   return rows.filter(row => {
     const searchable = [row.name, row.location, row.type, row.date].join(' ').toLocaleLowerCase();
-    return (!year || (dateInfo(row.date).year || 'unknown') === year) && (!type || row.type === type) && tokens.every(t => searchable.includes(t));
+    return (!year || (dateInfo(row.date).year || 'unknown') === year) && (!type || row.type === type)
+      && (!season || seasonForDate(row.date) === season) && tokens.every(t => searchable.includes(t));
   }).sort((a, b) => dateInfo(b.date).sort - dateInfo(a.date).sort || a.name.localeCompare(b.name, 'zh-CN'));
 }
 

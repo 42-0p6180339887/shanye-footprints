@@ -59,8 +59,50 @@
   text-decoration: underline;
 }
 
+#activities .season-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-top: 17px;
+}
+
+#activities .season-filters button {
+  min-height: 44px;
+  padding: 8px 13px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  background: transparent;
+  color: var(--archive-muted);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+#activities .season-filters button[aria-pressed="true"] {
+  border-color: #d3c7d8;
+  background: var(--archive-purple-soft);
+  color: var(--archive-purple);
+}
+
+#activities .season-filters button:hover {
+  background: #f0eee8;
+  color: var(--archive-purple);
+}
+
+#activities .filter-note,
+#activities #season-unknown {
+  color: var(--archive-muted);
+  font-size: 11px;
+  line-height: 1.7;
+}
+
+#activities .filter-note {
+  margin-top: 8px;
+}
+
 #activities .list-heading {
   align-items: baseline;
+  flex-wrap: wrap;
+  gap: 7px 20px;
   padding-top: 22px;
   color: var(--archive-muted);
   font-size: 12px;
@@ -226,6 +268,7 @@
 }
 
 #activity-dialog .detail-toolbar > span:first-child {
+  min-width: 0;
   color: var(--detail-ink);
   letter-spacing: .025em;
 }
@@ -235,6 +278,7 @@
 }
 
 #activity-dialog .detail-toolbar button {
+  flex-shrink: 0;
   min-height: 38px;
   gap: 12px;
   padding: 3px 0 3px 12px;
@@ -623,6 +667,19 @@
 
   #activities .filters {
     gap: 9px 12px;
+  }
+
+  #activities .season-filters {
+    gap: 6px;
+    padding-top: 13px;
+  }
+
+  #activities .season-filters button {
+    padding-inline: 9px;
+  }
+
+  #activities .season-filters button > span {
+    display: none;
   }
 
   #activities .filters input,

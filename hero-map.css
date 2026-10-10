@@ -48,3 +48,9 @@ nav{gap:34px;font-size:12px}nav a{transition:color .2s}nav a:hover{color:var(--p
 }
 
 @media(max-width:600px){.map-selection{margin:12px 14px 0;gap:10px}.map-selection-name{font-size:12px}.map-open-activity{font-size:11px}.map-neighbors{margin:6px 14px 0;gap:2px 5px}.map-basemap-note{margin-inline:14px}.journey-legend-item{min-height:44px}}
+
+/* Keep the full site name readable alongside the personal-footprints link. */
+.brand,.brand-copy{min-width:0}.brand-mark,.header-inner nav{flex-shrink:0}
+.brand-copy strong{line-height:1.35;letter-spacing:.04em}
+.site-footer{gap:20px}.site-footer strong{display:block;line-height:1.4;letter-spacing:.04em}.site-footer>a{flex-shrink:0;white-space:nowrap}
+@media(max-width:600px){.header-inner{gap:16px}.brand-copy strong{max-width:6.5em;font-size:18px}.site-footer strong{max-width:6.5em;font-size:18px}}

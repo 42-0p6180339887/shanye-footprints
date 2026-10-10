@@ -1,4 +1,4 @@
-import {validateActivities, validateDocuments, dateInfo, selectActivities, pointAtProgress} from './lib.mjs';
+import {validateActivities, validateDocuments, dateInfo, seasonForDate, ACTIVITY_SEASONS, selectActivities, pointAtProgress} from './lib.mjs';
 import {parseGPX, drawProfile} from './gpx.mjs';
 import {Route3D} from './route-3d.mjs';
 import {getTrackPreview, trackRequest, prepareSavedTrack} from './track-client.mjs';
@@ -7,7 +7,7 @@ import {renderJourneyMap} from './journey-map.mjs';
 
 const $ = id => document.getElementById(id);
 const text = (tag, value, cls) => { const el = document.createElement(tag); el.textContent = value; if (cls) el.className = cls; return el; };
-let activities = [], documents = {}, activeActivity = null, visibleLimit = 30;
+let activities = [], documents = {}, activeActivity = null, visibleLimit = 30, selectedSeason = '';
 let routeState = null, currentTrack = null, routeView = '3d', scene = null;
 let map, trackLayer, movingMarker, generation = 0, busy = false, displayedTrackId = null, acceptedRevision = -1, leafletStyleRequest, leafletScriptRequest;
 let animation = null, lastFrame = null, playbackPosition = 0;
@@ -20,26 +20,49 @@ function displayName(activity) {
     .replace(/\s*(?:总文件|总文档|准备会文档)$/u, '').trim() || activity.name;
 }
 function statusLabel(row) { return row.status === '仅有计划证据' ? '仅有活动计划' : row.status === '待核对' ? '是否成行不详' : ''; }
-function formatDate(activity) { const d = dateInfo(activity.date); return d.complete ? `${d.year}.${d.month}.${d.day}` : activity.date || '日期未注明'; }
+function formatDate(activity) { const d = dateInfo(activity.date); return d.complete && !d.range ? `${d.year}.${d.month}.${d.day}` : activity.date || '日期未注明'; }
+function readFilterUrl() {
+  const params = new URL(location.href).searchParams;
+  $('search-input').value = params.get('q') || '';
+  for (const [param, id] of [['year','year-filter'], ['type','type-filter']]) {
+    const value = params.get(param) || '';
+    $(id).value = [...$(id).options].some(option => option.value === value) ? value : '';
+  }
+  const season = params.get('season');
+  selectedSeason = Object.hasOwn(ACTIVITY_SEASONS, season) ? season : '';
+}
+function syncFilterUrl() {
+  const url = new URL(location.href);
+  for (const [key, value] of Object.entries({q:$('search-input').value, year:$('year-filter').value, type:$('type-filter').value, season:selectedSeason})) {
+    if (value.trim()) url.searchParams.set(key, value); else url.searchParams.delete(key);
+  }
+  if (url.href !== location.href) history.replaceState(null, '', url.pathname + url.search + url.hash);
+}
+function updateFilters() { syncFilterUrl(); renderActivities(true); }
 function renderActivities(reset = false) {
   if (reset) visibleLimit = 30;
-  const rows = selectActivities(activities, {query:$('search-input').value,year:$('year-filter').value,type:$('type-filter').value});
-  $('result-count').textContent = `${rows.length} 个活动`;
+  const filters = {query:$('search-input').value,year:$('year-filter').value,type:$('type-filter').value};
+  const rows = selectActivities(activities, {...filters, season:selectedSeason});
+  const unknown = selectActivities(activities, filters).filter(row => !seasonForDate(row.date)).length;
+  $('result-count').textContent = `${rows.length} 个活动${selectedSeason ? ` · ${ACTIVITY_SEASONS[selectedSeason]}` : ''}`;
+  $('season-unknown').hidden = !unknown;
+  $('season-unknown').textContent = unknown ? `${selectedSeason ? '另有 ' : ''}${unknown} 个活动日期不详，${selectedSeason ? '未归入季节' : '保留在全部季节'}` : '';
+  document.querySelectorAll('[data-season]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.season === selectedSeason)));
   $('empty-state').hidden = rows.length > 0;
   $('load-more').hidden = rows.length <= visibleLimit;
   const fragment = document.createDocumentFragment();
   let lastYear, yearRows;
   for (const activity of rows.slice(0, visibleLimit)) {
-    const date = dateInfo(activity.date), year = date.year || '更早的旅程';
+    const date = dateInfo(activity.date), year = date.year || '年份未注明';
     if (year !== lastYear) {
       const group = text('section','', 'year-group');
       group.append(text('h3',year,'timeline-year')); yearRows = text('div','','year-rows'); group.append(yearRows); fragment.append(group); lastYear = year;
     }
     const button = text('button','','activity-row'); button.type = 'button'; button.dataset.status = activity.status;
     button.setAttribute('aria-label', `查看活动：${activity.name}`);
-    const dateCell = text('span','','activity-date'); dateCell.append(text('strong',date.complete ? date.day : '—'),text('small',date.complete ? `${date.month} 月` : '日期未注明'));
+    const dateCell = text('span','','activity-date'); dateCell.append(text('strong',date.day || '—'),text('small',date.month ? `${date.month} 月` : '日期未注明'));
     const body = text('span','','activity-body'); body.append(text('span',displayName(activity),'activity-title'));
-    const meta = text('span',[activity.location, !date.complete ? activity.date : ''].filter(Boolean).join(' · '),'activity-meta');
+    const meta = text('span',[activity.location, !date.complete || date.range ? activity.date : ''].filter(Boolean).join(' · '),'activity-meta');
     if (statusLabel(activity)) meta.append(text('span',statusLabel(activity),'status-note'));
     body.append(meta);
     button.append(dateCell,body,text('span',activity.type === '未分类' ? '山野活动' : activity.type,'activity-type'),text('span','↗','activity-arrow'));
@@ -252,9 +275,10 @@ $('gpx-input').addEventListener('change',event=>uploadTrack(event.target.files?.
 $('clear-route').addEventListener('click',()=>changeVersion('/undo',{expectedRevision:routeState?.revision}));
 $('play-route').addEventListener('click',()=>{if(animation){pausePlayback();return;}if(!currentTrack)return;if(Number($('route-progress').value)>=1000)$('route-progress').value=0;playbackPosition=Number($('route-progress').value);$('play-route').textContent='暂停 Ⅱ';$('play-route').setAttribute('aria-pressed','true');animation=requestAnimationFrame(animate);});
 $('route-progress').addEventListener('input',()=>{pausePlayback();updatePosition();});
-for(const id of ['search-input','year-filter','type-filter'])$(id).addEventListener('input',()=>renderActivities(true));
+for(const id of ['search-input','year-filter','type-filter'])$(id).addEventListener('input',updateFilters);
+document.querySelectorAll('[data-season]').forEach(button => button.addEventListener('click', () => {selectedSeason = button.dataset.season; updateFilters();}));
 document.querySelector('.filters').addEventListener('submit',event=>event.preventDefault());
-$('reset-filters').addEventListener('click',()=>{$('search-input').value=$('year-filter').value=$('type-filter').value='';renderActivities(true);});
+$('reset-filters').addEventListener('click',()=>{$('search-input').value=$('year-filter').value=$('type-filter').value=selectedSeason='';updateFilters();});
 $('load-more').addEventListener('click',()=>{visibleLimit+=30;renderActivities();});
 document.querySelectorAll('[data-route-view]').forEach(button=>button.addEventListener('click',()=>setRouteView(button.dataset.routeView)));
 $('rotate-left').addEventListener('click',()=>scene?.rotate(-.22,0));$('rotate-right').addEventListener('click',()=>scene?.rotate(.22,0));
@@ -277,6 +301,7 @@ window.addEventListener('focus',async()=>{
 });
 document.addEventListener('visibilitychange',()=>{if(document.hidden)pausePlayback();});
 window.addEventListener('hashchange',()=>{const id=new URLSearchParams(location.hash.slice(1)).get('activity');const row=activities.find(a=>a.id===id);if(row&&row.id!==activeActivity?.id)openActivity(row,false);});
+window.addEventListener('popstate',()=>{readFilterUrl();renderActivities(true);});
 try {
   const [a,d]=await Promise.all([fetch(new URL('data/activities.json',import.meta.url)),fetch(new URL('data/activity-documents.json',import.meta.url))]);
   if(!a.ok||!d.ok)throw new Error('活动页面暂时没有加载出来');
@@ -285,9 +310,9 @@ try {
   const years=[...new Set(activities.map(row=>dateInfo(row.date).year).filter(Boolean))].sort().reverse();
   $('stat-span').textContent=years.length?`${years.at(-1)} — ${years[0]}`:'';
   years.forEach(year=>$('year-filter').append(new Option(year,year)));
-  if(activities.some(row=>!dateInfo(row.date).year))$('year-filter').append(new Option('日期未注明','unknown'));
+  if(activities.some(row=>!dateInfo(row.date).year))$('year-filter').append(new Option('年份未注明','unknown'));
   [...new Set(activities.map(row=>row.type))].sort((a,b)=>a.localeCompare(b,'zh-CN')).forEach(type=>$('type-filter').append(new Option(type==='未分类'?'其他活动':type,type)));
-  renderActivities();
+  readFilterUrl(); syncFilterUrl(); renderActivities();
   renderJourneyMap(selectActivities(activities).filter(row=>dateInfo(row.date).complete).slice(0,10),openActivity);
   const latest=selectActivities(activities).find(row=>dateInfo(row.date).complete);
   if(latest){$('latest-activity').textContent=`最近一次 · ${displayName(latest)} ↗`;$('latest-activity').href=`#activity=${latest.id}`;$('latest-activity').addEventListener('click',event=>{event.preventDefault();openActivity(latest);});}

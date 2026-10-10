@@ -47,7 +47,7 @@ function renderActivities(reset = false) {
   $('result-count').textContent = `${rows.length} 个活动${selectedSeason ? ` · ${ACTIVITY_SEASONS[selectedSeason]}` : ''}`;
   $('season-unknown').hidden = !unknown;
   $('season-unknown').textContent = unknown ? `${selectedSeason ? '另有 ' : ''}${unknown} 个活动日期不详，${selectedSeason ? '未归入季节' : '保留在全部季节'}` : '';
-  document.querySelectorAll('[data-season]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.season === selectedSeason)));
+  $('season-filter').value = selectedSeason;
   $('empty-state').hidden = rows.length > 0;
   $('load-more').hidden = rows.length <= visibleLimit;
   const fragment = document.createDocumentFragment();
@@ -276,7 +276,7 @@ $('clear-route').addEventListener('click',()=>changeVersion('/undo',{expectedRev
 $('play-route').addEventListener('click',()=>{if(animation){pausePlayback();return;}if(!currentTrack)return;if(Number($('route-progress').value)>=1000)$('route-progress').value=0;playbackPosition=Number($('route-progress').value);$('play-route').textContent='暂停 Ⅱ';$('play-route').setAttribute('aria-pressed','true');animation=requestAnimationFrame(animate);});
 $('route-progress').addEventListener('input',()=>{pausePlayback();updatePosition();});
 for(const id of ['search-input','year-filter','type-filter'])$(id).addEventListener('input',updateFilters);
-document.querySelectorAll('[data-season]').forEach(button => button.addEventListener('click', () => {selectedSeason = button.dataset.season; updateFilters();}));
+$('season-filter').addEventListener('change', () => {selectedSeason = $('season-filter').value; updateFilters();});
 document.querySelector('.filters').addEventListener('submit',event=>event.preventDefault());
 $('reset-filters').addEventListener('click',()=>{$('search-input').value=$('year-filter').value=$('type-filter').value=selectedSeason='';updateFilters();});
 $('load-more').addEventListener('click',()=>{visibleLimit+=30;renderActivities();});

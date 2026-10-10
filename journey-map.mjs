@@ -19,17 +19,24 @@ function span(className, text) {
 
 export async function renderJourneyMap(activities, openActivity) {
   cleanup();
-  const byId = id => document.getElementById(id);
-  const pins = byId('journey-pins'), legend = byId('journey-legend'), map = byId('journey-map');
-  if (!pins || !legend || !map) return;
+  const page = document, byId = id => page.getElementById(id);
+  const pins = byId('journey-pins'), map = byId('journey-map'), neighbors = byId('map-neighbors');
+  if (!pins || !map || !neighbors) return;
   const baseline = {bounds: MAP_BOUNDS, asset: 'assets/journey-satellite-original.jpg'};
-  let source = baseline, remoteSource = null, locations = {}, selectedId = activities[0]?.id;
+  let source = baseline, remoteSource = null, locations = {}, selectedId, neighborControl = null;
   let layout, observer, resizeTimer, imageTimer, imageRequest = '', alive = true, imageGeneration = 0;
   let renderedWidth = 0;
-  const buttons = new Map(), controls = new Map();
-  const selected = byId('map-selection'), neighbors = byId('map-neighbors');
+  const controls = new Map();
   const basemap = byId('journey-basemap'), basemapNote = byId('map-basemap-note');
-  cleanup = () => { alive = false; observer?.disconnect(); clearTimeout(resizeTimer); clearTimeout(imageTimer); imageGeneration++; };
+  const outside = event => { if (!neighbors.contains(event.target) && !pins.contains(event.target)) closeNeighbors(); };
+  const escape = event => { if (event.key === 'Escape' && !neighbors.hidden) { event.preventDefault(); closeNeighbors(true); } };
+  const leave = event => { if (event.relatedTarget && !neighbors.contains(event.relatedTarget) && event.relatedTarget !== neighborControl) closeNeighbors(); };
+  page.addEventListener('pointerdown', outside); neighbors.addEventListener('keydown', escape); neighbors.addEventListener('focusout', leave);
+  cleanup = () => {
+    alive = false; observer?.disconnect(); clearTimeout(resizeTimer); clearTimeout(imageTimer); imageGeneration++;
+    page.removeEventListener('pointerdown', outside); neighbors.removeEventListener('keydown', escape); neighbors.removeEventListener('focusout', leave); closeNeighbors();
+  };
+  neighbors.hidden = true;
   const read = async name => {
     try { const response = await fetch(new URL(`./data/${name}`, import.meta.url), {signal: AbortSignal.timeout(10000)}); return response.ok ? await response.json() : null; }
     catch { return null; }
@@ -78,17 +85,11 @@ export async function renderJourneyMap(activities, openActivity) {
     basemap.setAttribute('visibility', 'hidden'); note('底图暂不可用，活动位置仍可查看');
   };
 
-  function selectActivity(id) {
-    const activity = activities.find(item => item.id === id);
-    if (!activity || !layout) return;
+  function markActivity(id) {
     selectedId = id;
-    for (const [activityId, button] of buttons) {
-      button.classList.toggle('is-selected', activityId === id);
-      button.setAttribute('aria-pressed', String(activityId === id));
-    }
     for (const [group, control] of controls) {
       const active = group.members.some(point => point.activity.id === id);
-      control.classList.toggle('is-selected', active); control.setAttribute('aria-pressed', String(active));
+      control.classList.toggle('is-selected', active);
     }
     const point = layout.points.find(item => item.activity.id === id);
     const focus = byId('map-selected-point'); focus.replaceChildren();
@@ -96,29 +97,40 @@ export async function renderJourneyMap(activities, openActivity) {
       focus.append(svg('circle', {cx: point.x, cy: point.y, r: 15, class: 'selected-ring'}));
       focus.append(svg('path', {d: STAR, transform: `translate(${point.x} ${point.y})`, class: 'pin-star selected-star'}));
     }
-    selected.replaceChildren();
-    const copy = document.createElement('div');
-    copy.append(span('map-selection-name', `${number(activities.indexOf(activity))}  ${shortName(activity)}`));
-    copy.append(span('map-selection-date', `${activity.date || '日期未注明'}${point ? '' : ' · 暂无路线位置'}`));
-    const open = document.createElement('button'); open.type = 'button'; open.className = 'map-open-activity'; open.textContent = '查看活动 ↗';
-    open.addEventListener('click', () => openActivity(activity)); selected.append(copy, open);
-    const restoreNeighborFocus = neighbors.contains?.(document.activeElement);
+  }
+
+  function closeNeighbors(restoreFocus = false) {
+    const trigger = neighborControl;
+    neighbors.hidden = true; neighborControl = null;
+    trigger?.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) trigger?.focus({preventScroll: true});
+  }
+
+  function openGroup(group, control) {
+    if (neighborControl === control && !neighbors.hidden) { closeNeighbors(true); return; }
+    closeNeighbors(); neighborControl = control;
+    control.setAttribute('aria-expanded', 'true');
     neighbors.replaceChildren();
-    const group = layout.groups.find(item => item.members.some(member => member.activity.id === id));
-    neighbors.hidden = !group || group.members.length < 2;
-    if (!neighbors.hidden) {
-      neighbors.append(span('map-neighbors-label', '附近活动'));
-      for (const member of group.members) {
-        const button = document.createElement('button'); button.type = 'button';
-        button.textContent = `${number(member.index)} ${shortName(member.activity)}`;
-        button.setAttribute('aria-pressed', String(member.activity.id === id));
-        button.addEventListener('click', () => selectActivity(member.activity.id)); neighbors.append(button);
-        if (restoreNeighborFocus && member.activity.id === id) button.focus({preventScroll: true});
-      }
+    const heading = document.createElement('div'); heading.className = 'map-neighbors-heading';
+    const close = document.createElement('button'); close.type = 'button'; close.className = 'map-neighbors-close';
+    close.textContent = '×'; close.setAttribute('aria-label', '关闭此处活动列表');
+    close.addEventListener('click', () => closeNeighbors(true));
+    heading.append(span('map-neighbors-label', `此处 ${group.members.length} 次活动`), close); neighbors.append(heading);
+    let firstButton;
+    for (const member of group.members) {
+      const button = document.createElement('button'); button.type = 'button'; button.className = 'map-neighbor-activity';
+      button.append(span('map-neighbor-name', `${number(member.index)} ${shortName(member.activity)}`),
+        span('map-neighbor-date', member.activity.date || '日期未注明'));
+      button.setAttribute('aria-label', `查看活动：${member.activity.name}，${member.activity.date || '日期未注明'}`);
+      button.addEventListener('click', () => { markActivity(member.activity.id); closeNeighbors(true); openActivity(member.activity); });
+      neighbors.append(button); firstButton ||= button;
     }
+    neighbors.hidden = false; firstButton?.focus({preventScroll: true});
   }
 
   function render(width) {
+    const previousGroup = neighborControl, restoreId = previousGroup && [...controls].find(([, control]) => control === previousGroup)?.[0].members[0].activity.id;
+    const restoreFocus = neighbors.contains(page.activeElement); closeNeighbors();
     renderedWidth = width;
     const height = journeyMapHeight(width);
     layout = createJourneyLayout(activities, locations, width, height);
@@ -139,29 +151,25 @@ export async function renderJourneyMap(activities, openActivity) {
       const first = group.members[0], grouped = group.members.length > 1;
       const label = grouped ? `${group.members.length} 次` : number(first.index);
       const control = svg('g', {class: 'journey-pin', role: 'button', tabindex: 0,
-        transform: `translate(${group.x} ${group.y})`, 'aria-label': group.members.map(point => `${number(point.index)} ${shortName(point.activity)}`).join('、')});
+        transform: `translate(${group.x} ${group.y})`, 'aria-label': grouped ? `此处 ${group.members.length} 次活动，打开列表` : `查看活动：${first.activity.name}`});
+      if (grouped) { control.setAttribute('aria-controls', 'map-neighbors'); control.setAttribute('aria-expanded', 'false'); control.setAttribute('aria-haspopup', 'dialog'); }
       control.append(svg('rect', {x: -24, y: -37, width: 48, height: 61, rx: 10, class: 'pin-hit'}));
       control.append(svg('rect', {x: -20, y: -32, width: 40, height: 21, rx: 10, class: 'pin-badge'}));
       const text = svg('text', {x: 0, y: -18, 'text-anchor': 'middle', class: 'pin-number'}); text.textContent = label; control.append(text);
-      const choose = () => selectActivity(first.activity.id);
+      const choose = () => {
+        if (grouped) openGroup(group, control);
+        else { closeNeighbors(); markActivity(first.activity.id); openActivity(first.activity); }
+      };
       control.addEventListener('click', choose);
       control.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); choose(); } });
       pins.append(control); controls.set(group, control);
+      if (restoreFocus && group.members.some(point => point.activity.id === restoreId)) control.focus({preventScroll: true});
     }
     const locationNote = byId('map-location-note'), missing = activities.length - layout.points.length;
     locationNote.hidden = missing === 0; locationNote.textContent = missing ? `${missing} 次活动暂无路线位置` : '';
-    selectActivity(selectedId || activities[0]?.id);
+    markActivity(selectedId);
   }
 
-  legend.replaceChildren();
-  activities.forEach((activity, index) => {
-    const button = document.createElement('button'); button.type = 'button'; button.className = 'journey-legend-item';
-    button.append(span('legend-number', number(index)), span('legend-name', shortName(activity)));
-    button.setAttribute('aria-label', `${number(index)} ${shortName(activity)}，在地图中选择`);
-    button.setAttribute('aria-pressed', 'false');
-    button.addEventListener('click', () => selectActivity(activity.id)); legend.append(button); buttons.set(activity.id, button);
-  });
-  byId('map-count').textContent = `最近 ${activities.length} 次活动`;
   byId('map-period').textContent = activities[0]?.date ? `截至 ${activities[0].date}` : '';
   render(Math.max(280, map.getBoundingClientRect().width || 600));
   if (typeof ResizeObserver !== 'undefined') {

@@ -74,7 +74,7 @@ export function containsMapBounds(outer, inner) {
     && outer.east >= inner.east - 1e-9 && outer.south <= inner.south + 1e-9 && outer.north >= inner.north - 1e-9;
 }
 
-export const journeyMapHeight = width => Math.min(520, Math.max(280, width * .65));
+export const journeyMapHeight = width => Math.min(360, Math.max(220, width * .46));
 
 /** One local raster covers the complete responsive family, not just a desktop screenshot. */
 export function journeyBasemapBounds(points) {

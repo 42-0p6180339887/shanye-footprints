@@ -54,3 +54,25 @@ nav{gap:34px;font-size:12px}nav a{transition:color .2s}nav a:hover{color:var(--p
 .brand-copy strong{line-height:1.35;letter-spacing:.04em}
 .site-footer{gap:20px}.site-footer strong{display:block;line-height:1.4;letter-spacing:.04em}.site-footer>a{flex-shrink:0;white-space:nowrap}
 @media(max-width:600px){.header-inner{gap:16px}.brand-copy strong{max-width:6.5em;font-size:18px}.site-footer strong{max-width:6.5em;font-size:18px}}
+
+/* Keep the map compact; overlapping trips appear only when a place is opened. */
+.hero{padding-top:28px;align-items:start}
+.hero-copy{padding:0 0 16px}.hero-heading{margin-top:22px}.hero h1{font-size:clamp(42px,4.65vw,66px)}
+.hero-description{margin-top:18px}.hero-cta{margin-top:18px}.hero-stats{margin-top:22px}
+.hero-bottom{margin-top:20px;padding:16px 0}
+.map-topline{padding:14px 20px}.map-heading strong{font-size:22px}
+.map-stage{position:relative}.journey-map{aspect-ratio:600/276}
+.map-credit{align-items:center;flex-wrap:wrap;padding:10px 16px 12px;gap:4px 12px;line-height:1.5}.map-credit a{margin-left:auto}
+.map-basemap-note{margin:0 16px 12px}
+.map-neighbors{position:absolute;z-index:2;top:12px;right:12px;width:min(300px,calc(100% - 24px));max-height:calc(100% - 24px);overflow:auto;overscroll-behavior:contain;display:block;margin:0;padding:6px 10px 8px;background:#fffdf8f5;border:1px solid #d6d8c8;border-radius:4px;box-shadow:0 6px 24px #35412a24}
+.map-neighbors[hidden]{display:none}
+.map-neighbors-heading{display:flex;align-items:center;justify-content:space-between;gap:8px;border-bottom:1px solid #e2e1d6}
+.map-neighbors-label{font-size:11px;color:#6f745f}
+.map-neighbors .map-neighbors-close{min-width:44px;min-height:44px;padding:4px;font-size:22px;line-height:1;color:#695371}
+.map-neighbors .map-neighbor-activity{display:grid;width:100%;gap:3px;min-height:44px;padding:8px;text-align:left;border-bottom:1px solid #ecebdf;border-radius:2px}
+.map-neighbor-name{font-size:12px;line-height:1.5;color:#535d47;overflow-wrap:anywhere}.map-neighbor-date{font-size:10px;color:#858975}
+.map-neighbors button:hover,.map-neighbors button:focus-visible{background:#eee9ef;color:#695371;outline:2px solid #695371;outline-offset:-2px}
+.journey-pin[aria-expanded=true] .pin-badge{fill:#eee9ef;stroke:#695371}
+@media(min-width:1600px){.hero{padding-top:32px}}
+@media(max-width:900px){.hero{padding-top:22px;align-items:stretch}.hero-copy{padding:0 3px 24px}.hero h1{font-size:55px}.hero-heading{margin-top:18px}.hero-description,.hero-cta,.hero-stats{margin-top:18px}.hero-bottom{margin-top:20px}}
+@media(max-width:600px){.hero{padding-top:20px}.hero-copy{padding-bottom:18px}.hero h1{font-size:45px}.hero-heading,.hero-description{margin-top:14px}.hero-cta,.hero-stats{margin-top:16px}.hero-bottom{margin-top:18px;padding:14px 3px}.map-topline{padding:12px 14px}.map-heading strong{font-size:20px}.map-credit{padding:9px 12px 10px;font-size:7px}.map-neighbors{top:8px;right:8px;width:calc(100% - 16px);max-height:calc(100% - 16px);margin:0}.map-basemap-note{margin:0 12px 10px}}

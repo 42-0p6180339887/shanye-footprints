@@ -21,10 +21,11 @@
 }
 
 #activities .filters {
+  grid-template-columns: minmax(200px, 1fr) 148px 148px 160px auto;
   border-top-color: var(--archive-ink);
   border-bottom-color: var(--archive-line);
-  gap: 22px;
-  padding-block: 15px;
+  gap: 16px;
+  padding-block: 12px;
 }
 
 #activities .filters input,
@@ -59,44 +60,10 @@
   text-decoration: underline;
 }
 
-#activities .season-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  padding-top: 17px;
-}
-
-#activities .season-filters button {
-  min-height: 44px;
-  padding: 8px 13px;
-  border: 1px solid transparent;
-  border-radius: 3px;
-  background: transparent;
-  color: var(--archive-muted);
-  font-size: 12px;
-  white-space: nowrap;
-}
-
-#activities .season-filters button[aria-pressed="true"] {
-  border-color: #d3c7d8;
-  background: var(--archive-purple-soft);
-  color: var(--archive-purple);
-}
-
-#activities .season-filters button:hover {
-  background: #f0eee8;
-  color: var(--archive-purple);
-}
-
-#activities .filter-note,
 #activities #season-unknown {
   color: var(--archive-muted);
   font-size: 11px;
   line-height: 1.7;
-}
-
-#activities .filter-note {
-  margin-top: 8px;
 }
 
 #activities .list-heading {
@@ -641,6 +608,11 @@
 }
 
 @media (min-width: 701px) and (max-width: 1000px) {
+  #activities .filters {
+    grid-template-columns: minmax(160px, 1fr) repeat(3, 114px) auto;
+    gap: 12px;
+  }
+
   #activities .year-group {
     grid-template-columns: 78px minmax(0, 1fr);
     gap: 19px;
@@ -666,20 +638,22 @@
   }
 
   #activities .filters {
-    gap: 9px 12px;
+    grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+    gap: 8px;
   }
 
-  #activities .season-filters {
-    gap: 6px;
-    padding-top: 13px;
+  #activities .search-field {
+    grid-column: 1 / -1;
   }
 
-  #activities .season-filters button {
-    padding-inline: 9px;
+  #activities .filters label {
+    border: 0;
+    padding: 0;
   }
 
-  #activities .season-filters button > span {
-    display: none;
+  #activities .filters label:nth-child(2) select {
+    border-left: 0;
+    padding-left: 0;
   }
 
   #activities .filters input,
@@ -689,6 +663,14 @@
 
   #activities .filters select {
     min-height: 38px;
+    border-left: 1px solid var(--archive-line);
+    padding-left: 9px;
+    font-size: 12px;
+  }
+
+  #activities .reset-button {
+    padding-inline: 1px;
+    font-size: 11px;
   }
 
   #activities .list-heading {

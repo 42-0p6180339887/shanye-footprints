@@ -186,7 +186,7 @@
   {
     "id": "act-c58ed6eac17a5654",
     "name": "龙凤谷岭之一日拉练",
-    "date": null,
+    "date": "2025-09-13",
     "type": "拉练",
     "location": "龙凤谷岭",
     "status": "存在成行证据"
@@ -202,7 +202,7 @@
   {
     "id": "act-7e141a1b5f30e705",
     "name": "【活动 Event】10.5 金海湖 Jinhai lake Event",
-    "date": "10.5",
+    "date": "2025-10-05",
     "type": "未分类",
     "location": "金海湖",
     "status": "待核对"
@@ -210,7 +210,7 @@
   {
     "id": "act-f1d166b5b0128983",
     "name": "迎新活动-谷积山",
-    "date": null,
+    "date": "2025-10-07",
     "type": "未分类",
     "location": "谷积山",
     "status": "存在成行证据"
@@ -370,7 +370,7 @@
   {
     "id": "act-472454fd47f1f695",
     "name": "【准备会】2025323银山塔林拉练",
-    "date": "2025323",
+    "date": "2025-03-23",
     "type": "拉练",
     "location": "银山塔林",
     "status": "存在成行证据"
@@ -378,7 +378,7 @@
   {
     "id": "act-f41f6a4dff892270",
     "name": "【活动 Event】3.29 十渡拒马河拉练 Shidu-Jvma River hiking training",
-    "date": null,
+    "date": "2025-03-29",
     "type": "拉练",
     "location": "十渡 / 拒马河",
     "status": "存在成行证据"
@@ -386,7 +386,7 @@
   {
     "id": "act-4e7a65b4534f5f4b",
     "name": "【野营】2025 清明节太岳山野营",
-    "date": "2025",
+    "date": "2025-04-04—2025-04-06",
     "type": "野营",
     "location": "太岳山",
     "status": "存在成行证据"
@@ -394,7 +394,7 @@
   {
     "id": "act-de23fe5e6b1912f6",
     "name": "【活动 Event】4.20 六寺连穿 six-temple trekking",
-    "date": null,
+    "date": "2025-04-20",
     "type": "未分类",
     "location": "六寺",
     "status": "存在成行证据"
@@ -410,7 +410,7 @@
   {
     "id": "act-2d4e5aa90b309d28",
     "name": "【活动 Event】5.2 麻田岭单日徒步 Matianling Single-Day Hike",
-    "date": null,
+    "date": "2025-05-02",
     "type": "徒步",
     "location": "麻田岭",
     "status": "存在成行证据"
@@ -434,7 +434,7 @@
   {
     "id": "act-a04ca2d4a7825222",
     "name": "【野营】0524-25东胡林-双龙峡",
-    "date": "0524-25",
+    "date": "2025-05-24—2025-05-25",
     "type": "野营",
     "location": "东胡林 / 双龙峡",
     "status": "存在成行证据"
@@ -506,7 +506,7 @@
   {
     "id": "act-939727d0a577597b",
     "name": "【野营】2024国庆10.4-10.7库布奇野营",
-    "date": "2024",
+    "date": "2024-10-04—2024-10-07",
     "type": "野营",
     "location": "库布奇",
     "status": "存在成行证据"
@@ -602,7 +602,7 @@
   {
     "id": "act-0337bb93babebe24",
     "name": "【野营】24.11.2/3 大黑峰野营",
-    "date": "24.11.2",
+    "date": "2024-11-02—2024-11-03",
     "type": "野营",
     "location": "大黑峰",
     "status": "存在成行证据"
@@ -610,7 +610,7 @@
   {
     "id": "act-0e6ea4335d018605",
     "name": "【野营】24.12.14/15 狐狸峪金海湖野营",
-    "date": "24.12.14",
+    "date": "2024-12-14—2024-12-15",
     "type": "野营",
     "location": "狐狸峪 / 金海湖",
     "status": "存在成行证据"
@@ -634,7 +634,7 @@
   {
     "id": "act-0c0cbcd83b391fc4",
     "name": "【活动 Event】3.16 歪顶坨-环秀湖行摄拉练Waidingtuo - Huanxiu Lake Orientation Hike",
-    "date": null,
+    "date": "2024-03-16",
     "type": "行摄",
     "location": "歪顶坨 / 环秀湖",
     "status": "存在成行证据"
@@ -666,7 +666,7 @@
   {
     "id": "act-19a623249bbb1108",
     "name": "【活动 Event】3.24 十渡拒马河拉练 Shidu-Jvma River hiking training",
-    "date": null,
+    "date": "2024-03-24",
     "type": "拉练",
     "location": "十渡 / 拒马河",
     "status": "存在成行证据"
@@ -682,7 +682,7 @@
   {
     "id": "act-34241ce193acea8b",
     "name": "【0404珍珠湖】准备会文件",
-    "date": "0404",
+    "date": "2024-04-04",
     "type": "未分类",
     "location": "珍珠湖",
     "status": "存在成行证据"
@@ -714,7 +714,7 @@
   {
     "id": "act-8e7f0591f20d6f4e",
     "name": "【活动 Event】5.18-5.19 灵山野营 Lingshan Camp",
-    "date": "18-5.19",
+    "date": "2024-05-18—2024-05-19",
     "type": "野营",
     "location": "灵山",
     "status": "存在成行证据"
@@ -770,7 +770,7 @@
   {
     "id": "act-7046d40ffe15cfcd",
     "name": "202309 29 西山中秋赏月腐败徒步",
-    "date": "202309 29",
+    "date": "2023-09-29",
     "type": "徒步",
     "location": "西山",
     "status": "存在成行证据"
@@ -810,7 +810,7 @@
   {
     "id": "act-c6eff96cdbac7e84",
     "name": "【活动 Event】10.28-29 红螺两日一夜 Hongluo 2D1N",
-    "date": "10.28-29",
+    "date": "2023-10-28—2023-10-29",
     "type": "未分类",
     "location": "红螺",
     "status": "存在成行证据"
@@ -834,7 +834,7 @@
   {
     "id": "act-7ace2800a0486668",
     "name": "【活动 Event】11.12 清华x人大联谊-京西古道拉练 Tsinghua x Renmin Univ. - West Beijing Ancient Pass",
-    "date": "11.12",
+    "date": "2023-11-12",
     "type": "拉练",
     "location": "京西古道",
     "status": "存在成行证据"
@@ -858,7 +858,7 @@
   {
     "id": "act-60e3d12ecf42545a",
     "name": "【拉练】11.26凤凰岭拉练",
-    "date": "11.26",
+    "date": "2023-11-26",
     "type": "拉练",
     "location": "凤凰岭",
     "status": "存在成行证据"
@@ -866,7 +866,7 @@
   {
     "id": "act-bc2da60cf66e5eb4",
     "name": "【活动 Event】11.26 阳台山负重拉练 Yangtaishan Mountain Weight-bearing hiking training",
-    "date": "11.26",
+    "date": "2023-11-26",
     "type": "拉练",
     "location": "阳台山",
     "status": "存在成行证据"
@@ -906,7 +906,7 @@
   {
     "id": "act-a719ae15e03c76cd",
     "name": "【活动 Event】12.16-17 老龙窝野营 Dragon's Nest Camp",
-    "date": "12.16-17",
+    "date": "2023-12-16—2023-12-17",
     "type": "野营",
     "location": "老龙窝",
     "status": "存在成行证据"
@@ -930,7 +930,7 @@
   {
     "id": "act-8589bd81d1a9ba8d",
     "name": "技术|2024登山队攀冰1批（元旦）",
-    "date": "2024",
+    "date": "2023-12-30—2024-01-01",
     "type": "攀冰",
     "location": null,
     "status": "存在成行证据"
@@ -938,7 +938,7 @@
   {
     "id": "act-2dbbed7fe80c5331",
     "name": "2024登山队攀冰2批（0113-0114）",
-    "date": "2024",
+    "date": "2024-01-13—2024-01-14",
     "type": "攀冰",
     "location": null,
     "status": "存在成行证据"
@@ -946,7 +946,7 @@
   {
     "id": "act-c6c9033cccb94836",
     "name": "技术|2024登山队攀冰3批(1.20-21)",
-    "date": "2024",
+    "date": "2024-01-20—2024-01-21",
     "type": "攀冰",
     "location": null,
     "status": "存在成行证据"
@@ -970,7 +970,7 @@
   {
     "id": "act-84670a3461c90266",
     "name": "23.3.12京西古道拉练",
-    "date": "23.3.12",
+    "date": "2023-03-12",
     "type": "拉练",
     "location": "京西古道",
     "status": "待核对"
@@ -1042,7 +1042,7 @@
   {
     "id": "act-78558c06736e7e94",
     "name": "2023五一东猴顶野营",
-    "date": "2023",
+    "date": "2023-05-01",
     "type": "野营",
     "location": "东猴顶",
     "status": "存在成行证据"
@@ -1146,7 +1146,7 @@
   {
     "id": "act-4848604d69b5725e",
     "name": "五一黄草梁三日野营",
-    "date": null,
+    "date": "2022-05-01—2022-05-03",
     "type": "野营",
     "location": "黄草梁",
     "status": "待核对"
@@ -1162,7 +1162,7 @@
   {
     "id": "act-310559044e50793b",
     "name": "2022国庆阳台山迎新野营",
-    "date": "2022",
+    "date": "2022-10-02—2022-10-03",
     "type": "野营",
     "location": "阳台山",
     "status": "存在成行证据"
@@ -1666,7 +1666,7 @@
   {
     "id": "act-5c5a64520579e57b",
     "name": "技术｜2026登山队攀冰1批（01.10-11）",
-    "date": "2026",
+    "date": "2026-01-10—2026-01-11",
     "type": "攀冰",
     "location": null,
     "status": "存在成行证据"

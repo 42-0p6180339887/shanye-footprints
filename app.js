@@ -15,6 +15,7 @@ let routeState = null, currentTrack = null, routeView = '3d', scene = null;
 let map, trackLayer, movingMarker, generation = 0, busy = false, displayedTrackId = null, acceptedRevision = -1, leafletStyleRequest, leafletScriptRequest;
 let animation = null, lastFrame = null, playbackPosition = 0;
 let documentObserver = null;
+let activityReturnHash = '';
 
 function statusLabel(row) { return row.status === '仅有计划证据' ? '仅有活动计划' : row.status === '待核对' ? '是否成行不详' : ''; }
 function formatDate(activity) { const d = dateInfo(activity.date); return d.complete && !d.range ? `${d.year}.${d.month}.${d.day}` : activity.date || '日期未注明'; }
@@ -99,7 +100,10 @@ async function openActivity(activity, updateHash = true) {
   } else { $('document-link').removeAttribute('href'); $('document-frame').removeAttribute('src'); }
   $('document-note').textContent = doc ? '无法显示时，可在飞书打开。' : '';
   clearScene();
-  if (!$('activity-dialog').open) $('activity-dialog').showModal();
+  if (!$('activity-dialog').open) {
+    activityReturnHash = location.hash.startsWith('#activity=') ? '' : location.hash;
+    $('activity-dialog').showModal();
+  }
   $('activity-dialog').scrollTop = 0;
   if (updateHash) history.replaceState(null,'',`#activity=${encodeURIComponent(activity.id)}`);
   $('route-status').textContent = '正在加载路线…'; setBusy(true);
@@ -266,7 +270,7 @@ async function changeVersion(suffix,body) {
 }
 
 $('close-dialog').addEventListener('click',()=>$('activity-dialog').close());
-$('activity-dialog').addEventListener('close',()=>{generation++; pausePlayback(); activeActivity=null; documentObserver?.disconnect();documentObserver=null; $('document-frame').removeAttribute('src'); if(location.hash.startsWith('#activity='))history.replaceState(null,'',location.pathname+location.search+'#activities');});
+$('activity-dialog').addEventListener('close',()=>{generation++; pausePlayback(); activeActivity=null; documentObserver?.disconnect();documentObserver=null; $('document-frame').removeAttribute('src'); if(location.hash.startsWith('#activity='))history.replaceState(null,'',location.pathname+location.search+activityReturnHash);});
 $('activity-dialog').addEventListener('click',event=>{if(event.target===$('activity-dialog')){const r=$('activity-dialog').getBoundingClientRect();if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)$('activity-dialog').close();}});
 $('gpx-input').addEventListener('change',event=>uploadTrack(event.target.files?.[0]));
 $('clear-route').addEventListener('click',()=>changeVersion('/undo',{expectedRevision:routeState?.revision}));

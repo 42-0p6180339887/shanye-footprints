@@ -17,7 +17,7 @@ export function initializePortal() {
   if (!entry || !dialog) return;
   entry.addEventListener('click', () => dialog.showModal());
   document.getElementById('close-training-entry')?.addEventListener('click', () => dialog.close());
-  dialog.addEventListener('close', () => entry.focus());
+  dialog.addEventListener('close', () => entry.focus({preventScroll: true}));
   dialog.addEventListener('click', event => {
     if (event.target !== dialog) return;
     const box = dialog.getBoundingClientRect();

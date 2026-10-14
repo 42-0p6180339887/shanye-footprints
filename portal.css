@@ -1,5 +1,5 @@
 /* The public portal shares the existing container and leaves activity tools intact. */
-:is(.portal-hero, .portal-services, .portal-recent, .portal-library, .portal-map-section, .portal-entry-dialog) {
+:is(.portal-hero, .portal-services, .portal-work, .portal-recent, .portal-library, .portal-map-section, .portal-entry-dialog) {
   --portal-purple: #583266;
   --portal-paper: #f7f6f4;
   --portal-ink: #272832;
@@ -12,10 +12,10 @@
 
 .portal-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   align-items: center;
-  gap: 44px;
-  padding-block: 58px 48px;
+  gap: 56px;
+  padding-block: 46px 42px;
 }
 
 .portal-hero-copy {
@@ -30,11 +30,19 @@
 }
 
 .portal-hero h1 {
-  margin: 17px 0 19px;
-  font: 400 clamp(43px, 4.5vw, 65px) / 1.28 var(--serif);
-  letter-spacing: 0.015em;
+  margin: 20px 0 15px;
+  font: 400 clamp(43px, 4.5vw, 63px) / 1.24 var(--serif);
+  letter-spacing: 0.025em;
   overflow-wrap: anywhere;
 }
+
+.portal-hero h1 > span { color: var(--portal-purple); }
+.portal-hero .eyebrow { display: flex; align-items: center; gap: 12px; }
+.portal-hero .eyebrow > span { width: 23px; height: 2px; background: var(--portal-purple); }
+.portal-hero-links { display: flex; align-items: center; gap: 28px; margin-top: 22px; }
+.portal-hero-links a { display: inline-flex; align-items: center; gap: 22px; min-height: 44px; font-size: 13px; border-bottom: 1px solid var(--portal-purple); }
+.portal-hero-links a + a { color: var(--portal-muted); border-bottom-color: var(--portal-line); }
+.portal-hero-links a:hover { color: var(--portal-purple); border-bottom-color: var(--portal-purple); }
 
 .portal-intro {
   color: var(--portal-muted);
@@ -44,27 +52,45 @@
 
 .portal-hero-art {
   min-width: 0;
-  text-align: center;
   align-self: center;
+  justify-self: end;
+  width: min(100%, 394px);
+  margin: 0 12px 0 0;
+  padding: 15px 15px 0;
+  background: #fffefa;
+  border: 1px solid var(--portal-line);
+  box-shadow: 10px 10px 0 #eae5de;
 }
+
+.portal-emblem-mat { padding: 15px; background: #e7e3dc; }
 
 .portal-hero-art img {
   display: block;
   width: 100%;
   height: auto;
-  max-width: 480px;
-  max-height: 255px;
-  margin-inline: auto;
   object-fit: contain;
 }
 
-.portal-hero-art small {
-  display: block;
-  margin-top: 10px;
-  color: var(--portal-green);
-  font-size: 9px;
-  letter-spacing: 0.17em;
+.portal-hero-art figcaption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 42px;
+  color: var(--portal-muted);
+  font-size: 8px;
+  letter-spacing: 0.12em;
 }
+.portal-hero-art figcaption > span:first-child { color: var(--portal-purple); font-size: 10px; }
+
+.portal-work { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 16px; padding: 18px 23px; border: 1px solid #ddd4df; border-radius: 7px; background: #f0ebf2; }
+.portal-work-copy { display: flex; align-items: center; gap: 17px; min-width: 0; }
+.portal-work-symbol { color: var(--portal-purple); font: 300 31px/1 var(--sans); }
+.portal-work h2 { font-size: 16px; font-weight: 500; }
+.portal-work p { color: #706675; font-size: 12px; line-height: 1.8; margin-top: 3px; }
+.portal-work-links { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.portal-work-links a { display: flex; justify-content: space-between; align-items: center; gap: 24px; min-height: 44px; padding: 9px 16px; border: 1px solid #d5c8da; border-radius: 4px; background: #fffefa; color: var(--portal-purple); font-size: 12px; white-space: nowrap; }
+.portal-work-links a:hover { border-color: var(--portal-purple); }
 
 .portal-services {
   display: grid;
@@ -443,8 +469,8 @@
 
 @media (max-width: 1000px) {
   .portal-hero {
-    gap: 25px;
-    padding-block: 43px 37px;
+    gap: 28px;
+    padding-block: 38px 34px;
   }
 
   .portal-hero h1 {
@@ -488,9 +514,9 @@
 
 @media (max-width: 700px) {
   .portal-hero {
-    grid-template-columns: minmax(0, 1fr) minmax(82px, 29%);
-    gap: 12px;
-    padding-block: 34px 29px;
+    grid-template-columns: minmax(0, 1fr) minmax(104px, 35%);
+    gap: 16px;
+    padding-block: 28px 27px;
   }
 
   .portal-hero .eyebrow {
@@ -500,8 +526,8 @@
 
   .portal-hero h1 {
     margin: 13px 0;
-    font-size: clamp(32px, 9.25vw, 43px);
-    line-height: 1.35;
+    font-size: clamp(29px, 7.7vw, 43px);
+    line-height: 1.3;
   }
 
   .portal-intro {
@@ -509,9 +535,19 @@
     line-height: 1.9;
   }
 
-  .portal-hero-art small {
-    display: none;
-  }
+  .portal-hero .eyebrow { font-size: 8px; gap: 7px; letter-spacing: 0; }
+  .portal-hero .eyebrow > span { width: 12px; flex-shrink: 0; }
+  .portal-hero-art { padding: 6px 6px 0; margin-right: 5px; box-shadow: 5px 5px 0 #eae5de; }
+  .portal-emblem-mat { padding: 5px; }
+  .portal-hero-art figcaption { justify-content: center; min-height: 24px; }
+  .portal-hero-art figcaption > span:last-child { display: none; }
+  .portal-hero-links { gap: 19px; margin-top: 12px; }
+  .portal-hero-links a { gap: 8px; min-height: 38px; font-size: 11px; }
+  .portal-work { align-items: stretch; flex-direction: column; gap: 12px; padding: 16px; }
+  .portal-work-copy { gap: 13px; }
+  .portal-work h2 { font-size: 15px; }
+  .portal-work p { font-size: 11px; }
+  .portal-work-links a { flex: 1; }
 
   .portal-services {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -663,7 +699,7 @@
   }
 
   .portal-hero h1 {
-    font-size: 31px;
+    font-size: 27px;
   }
 
   .portal-service {

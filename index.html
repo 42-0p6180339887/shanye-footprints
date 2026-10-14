@@ -13,15 +13,32 @@
       // A normal homepage visit starts at the top; explicit links and Back keep their destination.
       if ('scrollRestoration' in history) {
         const returning = performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
-        history.scrollRestoration = !returning && !location.hash ? 'manual' : 'auto';
+        const startAtTop = !returning && !location.hash;
+        let interacted = false;
+        history.scrollRestoration = startAtTop ? 'manual' : 'auto';
+        if (startAtTop) document.documentElement.style.scrollBehavior = 'auto';
+        const releaseInitialScroll = () => {
+          interacted = true;
+          document.documentElement.style.removeProperty('scroll-behavior');
+          history.scrollRestoration = 'auto';
+        };
+        for (const type of ['wheel', 'touchstart', 'pointerdown', 'keydown']) {
+          addEventListener(type, releaseInitialScroll, {once: true, passive: true});
+        }
         addEventListener('click', event => {
           if (event.target.closest?.('a[href^="#"]')) history.scrollRestoration = 'auto';
         }, {capture: true});
         addEventListener('pagehide', () => { history.scrollRestoration = 'auto'; });
         addEventListener('pageshow', event => {
-          if (!event.persisted && !returning && !location.hash) {
+          if (!event.persisted && startAtTop && !location.hash && !interacted) {
             history.scrollRestoration = 'manual';
             scrollTo({top: 0, left: 0, behavior: 'instant'});
+            requestAnimationFrame(() => {
+              if (!interacted && !location.hash) scrollTo({top: 0, left: 0, behavior: 'instant'});
+              document.documentElement.style.removeProperty('scroll-behavior');
+            });
+          } else {
+            document.documentElement.style.removeProperty('scroll-behavior');
           }
         });
       }

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" fill="none" stroke="#583266" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+  <title>课堂与听众</title>
+  <path d="M64 35h272v110H64z" fill="#526553"/>
+  <path d="M56 145h288v12H56z" fill="#f7f6f4"/>
+  <path d="M97 157v24m206-24v24"/>
+  <path d="M105 64h80m-80 18h106m-106 18h60" stroke="#f7f6f4" stroke-width="4"/>
+  <path d="m245 61 47 27-47 27z" fill="#ba955e" stroke="#f7f6f4" stroke-width="4"/>
+  <path d="M201 137h25" stroke="#ba955e" stroke-width="5"/>
+  <circle cx="99" cy="188" r="15" fill="#f7f6f4"/>
+  <circle cx="200" cy="188" r="15" fill="#f7f6f4"/>
+  <circle cx="301" cy="188" r="15" fill="#f7f6f4"/>
+  <path d="M67 223v-5c0-10 14-17 32-17s32 7 32 17v5M168 223v-5c0-10 14-17 32-17s32 7 32 17v5M269 223v-5c0-10 14-17 32-17s32 7 32 17v5" fill="#f7f6f4"/>
+</svg>

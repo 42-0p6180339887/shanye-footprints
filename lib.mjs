@@ -11,7 +11,7 @@ export function displayActivityName(activity) {
   return activity.name.replace(/^【(?:总文件|总文档|活动\s*Event|野营|准备会|拉练)】\s*/u, '')
     .replace(/^(?:技术|十险)[｜|]\s*/u, '')
     .replace(TITLE_DATE_PREFIX, '')
-    .replace(/\s*(?:总文件|总文档|准备会文档)$/u, '').trim() || activity.name;
+    .replace(/[\s_—–-]*(?:总文件|总文档|准备会文档)$/u, '').trim() || activity.name;
 }
 
 export function validateDocuments(documents, activities) {

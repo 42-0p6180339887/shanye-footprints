@@ -1,0 +1,97 @@
+/* Shared application navigation; page-specific layouts live in their own stylesheets. */
+:root {
+  --purple: #583266;
+  --paper: #f7f6f4;
+}
+.site-header {
+  border-bottom: 1px solid var(--line);
+}
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 90px;
+  padding-block: 14px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-width: 0;
+}
+.brand-mark {
+  width: 64px;
+  height: 41px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+.brand-copy {
+  min-width: 0;
+}
+.brand-copy strong {
+  display: block;
+  font: 600 20px/1.45 var(--serif);
+  color: var(--purple);
+}
+.brand-copy > span {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+}
+.brand-copy .site-name-suffix {
+  font: 400 13px/1.5 var(--sans);
+  display: block;
+  color: var(--muted);
+}
+.header-inner nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.header-inner nav a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 9px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.header-inner nav a:hover {
+  background: var(--soft-purple);
+  color: var(--purple);
+}
+.header-inner nav a[aria-current="page"] {
+  background: var(--soft-purple);
+  color: var(--purple);
+  font-weight: 600;
+}
+@media (max-width: 700px) {
+  .header-inner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+    padding-block: 16px 10px;
+  }
+  .brand-copy strong {
+    font-size: 19px;
+  }
+  .brand-copy .site-name-suffix {
+    display: inline;
+    margin-left: 8px;
+  }
+  .header-inner nav {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 4px;
+  }
+  .header-inner nav a {
+    font-size: 14px;
+    padding-inline: 5px;
+  }
+}

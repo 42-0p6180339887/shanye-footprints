@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" fill="none" stroke="#583266" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+  <title>雪峰与山顶旗</title>
+  <path d="m54 210 97-133 42 51 34-77 123 159z" fill="#526553"/>
+  <path d="m151 77-50 69 36-13 17 19 18-21 21-3z" fill="#f7f6f4"/>
+  <path d="m227 51-63 120 47-19 27 24 20-29 35-10z" fill="#f7f6f4"/>
+  <path d="m227 51 11 125 24 34m-108-58-18 58" stroke="#272832" stroke-width="4"/>
+  <path d="M227 51V18m0 0h52l-14 13 14 13h-52" fill="#ba955e"/>
+  <path d="M45 211h315"/>
+</svg>

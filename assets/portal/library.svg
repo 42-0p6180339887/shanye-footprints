@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" fill="none" stroke="#583266" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+  <title>书架与翻开的书</title>
+  <path d="M59 42h242v148H59z" fill="#f7f6f4"/>
+  <path d="M59 114h242M59 190v13m242-13v13"/>
+  <path d="M78 63h25v51H78z" fill="#526553"/>
+  <path d="M105 55h25v59h-25zM135 69h22v45h-22z" fill="#f7f6f4"/>
+  <path d="m165 60 24-6 15 54-24 6z" fill="#ba955e"/>
+  <path d="M217 64h27v50h-27zM249 53h25v61h-25z" fill="#f7f6f4"/>
+  <path d="M82 83h17m11-13h15m96 13h18m15-12h15" stroke="#272832" stroke-width="3"/>
+  <path d="M77 137h55v18H77zm0 19h64v16H77z" fill="#f7f6f4"/>
+  <path d="M236 137h38v19h-38z" fill="#526553"/>
+  <path d="M158 144c25-8 54-5 76 8 26-13 59-16 88-6v59c-30-9-60-7-88 7-24-13-49-16-76-8z" fill="#f7f6f4"/>
+  <path d="M234 152v60m-61-49c16-3 31-1 45 5m-45 13c16-3 31-1 45 5m33-19c17-7 35-9 55-5m-55 23c17-7 35-9 55-5" stroke-width="3"/>
+</svg>

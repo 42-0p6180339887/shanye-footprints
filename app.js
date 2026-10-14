@@ -4,6 +4,9 @@ import {Route3D} from './route-3d.mjs';
 import {getTrackPreview, trackRequest, prepareSavedTrack} from './track-client.mjs';
 import {ROUTE_MANAGER_URL} from './site-config.mjs';
 import {renderJourneyMap} from './journey-map.mjs';
+import {initializePortal, renderRecentActivities, showRecentError} from './portal.mjs';
+
+initializePortal();
 
 const $ = id => document.getElementById(id);
 const text = (tag, value, cls) => { const el = document.createElement(tag); el.textContent = value; if (cls) el.className = cls; return el; };
@@ -307,8 +310,9 @@ try {
   if(activities.some(row=>!dateInfo(row.date).year))$('year-filter').append(new Option('年份未注明','unknown'));
   [...new Set(activities.map(row=>row.type))].sort((a,b)=>a.localeCompare(b,'zh-CN')).forEach(type=>$('type-filter').append(new Option(type==='未分类'?'其他活动':type,type)));
   readFilterUrl(); syncFilterUrl(); renderActivities();
+  renderRecentActivities(activities, openActivity);
   renderJourneyMap(selectActivities(activities).filter(row=>dateInfo(row.date).complete).slice(0,10),openActivity);
   const latest=selectActivities(activities).find(row=>dateInfo(row.date).complete);
   if(latest){$('latest-activity').textContent=`最近一次 · ${displayName(latest)} ↗`;$('latest-activity').href=`#activity=${latest.id}`;$('latest-activity').addEventListener('click',event=>{event.preventDefault();openActivity(latest);});}
   const id=new URLSearchParams(location.hash.slice(1)).get('activity'), selected=activities.find(row=>row.id===id);if(selected)openActivity(selected,false);
-}catch(error){$('load-error').hidden=false;$('load-error').textContent='活动暂时无法加载，请刷新后再试。';$('result-count').textContent='暂时无法打开活动';}
+}catch(error){showRecentError();$('load-error').hidden=false;$('load-error').textContent='活动暂时无法加载，请刷新后再试。';$('result-count').textContent='暂时无法打开活动';}

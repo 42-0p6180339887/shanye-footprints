@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" fill="none" stroke="#583266" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+  <title>头盔与盾牌</title>
+  <path d="M77 146c1-67 44-105 109-105s108 38 109 105" fill="#f7f6f4"/>
+  <path d="M80 142c54-15 145-15 211 0l13 22c-69 18-162 18-239 0z" fill="#f7f6f4"/>
+  <path d="M155 47c-9 21-14 45-14 73m76-73c9 21 14 45 14 73"/>
+  <path d="M167 77h38m-40 22h42" stroke="#526553" stroke-width="8"/>
+  <path d="m112 175 13 25h62l15-25" stroke-width="6"/>
+  <path d="M250 134c18 0 34-7 43-17 10 10 26 17 44 17v28c0 27-20 49-44 61-24-12-43-34-43-61z" fill="#526553"/>
+  <path d="m274 165 14 14 26-30" stroke="#f7f6f4" stroke-width="7"/>
+</svg>

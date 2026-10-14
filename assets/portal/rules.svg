@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" fill="none" stroke="#583266" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+  <title>条例册与勾选条文</title>
+  <path d="M109 36h171v172H109c-15 0-23-8-23-20V59c0-15 8-23 23-23Z" fill="#f7f6f4"/>
+  <path d="M109 36v153m-23-1c0-10 9-17 23-17h171M109 190h171"/>
+  <path d="M280 57h27v31h-27z" fill="#ba955e"/>
+  <path d="M280 99h27v31h-27z" fill="#526553"/>
+  <path d="M280 141h27v31h-27z" fill="#f7f6f4"/>
+  <path d="m133 76 9 9 16-19m-25 45 9 9 16-19m-25 45 9 9 16-19" stroke="#526553" stroke-width="6"/>
+  <path d="M176 77h75m-75 35h75m-75 35h75" stroke="#272832" stroke-width="5"/>
+</svg>
